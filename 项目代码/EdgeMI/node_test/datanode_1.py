@@ -36,27 +36,27 @@ total_length = inference_model.get_total_length()
 
 if __name__ == "__main__":
 
-    # # 1111111111111111111111111111111111111111111111111111111111111111111111111111111
-    # # 场景1： 各设备等算力、通信资源相同，全部计算数据交换
-    # # datanode 接受来自 namenode 的全部数据，直接进行推理，无需考虑数据的缓存与划分
-    # # 连续接收 namenode 发来的计算请求，直接计算并且返回推理结果
-    # print("进入计算场景 1")
-    # while True:
-    #     print("#### 进入模型阶段推理 ####")
-    #     # 接受来自 namenode 发送的参数
-    #     start, end, recv_tensor = datanode.datanode_recv_data()
-    #     middle_output = inference_model(recv_tensor, start, end)
-    #     # print ("middle_output:", middle_output.size())
-    #     datanode.datanode_send_data(middle_output, start, end)
-    #     print ("完成 %d - %d 的推理任务，并返回推理结果" %(start, end) )
-    #     if end >= conv_length - 1:
-    #         print("DataNode %d 结束推理")
-    #         break
-    #     # break
-    # # 关闭已建立的连接
-    # time.sleep(2)
-    # datanode.close()
-    # print("关闭 DataNode %d 的Socket连接" % datanode_name)
+    # 1111111111111111111111111111111111111111111111111111111111111111111111111111111
+    # 场景1： 各设备等算力、通信资源相同，全部计算数据交换
+    # datanode 接受来自 namenode 的全部数据，直接进行推理，无需考虑数据的缓存与划分
+    # 连续接收 namenode 发来的计算请求，直接计算并且返回推理结果
+    print("进入计算场景 1")
+    while True:
+        print("#### 进入模型阶段推理 ####")
+        # 接受来自 namenode 发送的参数
+        start, end, recv_tensor = datanode.datanode_recv_data()
+        middle_output = inference_model(recv_tensor, start, end)
+        # print ("middle_output:", middle_output.size())
+        datanode.datanode_send_data(middle_output, start, end)
+        print ("完成 %d - %d 的推理任务，并返回推理结果" %(start, end) )
+        if end >= conv_length - 1:
+            print("DataNode %d 结束推理")
+            break
+        # break
+    # 关闭已建立的连接
+    time.sleep(2)
+    datanode.close()
+    print("关闭 DataNode %d 的Socket连接" % datanode_name)
 
     # 已全部完成
 
@@ -200,38 +200,38 @@ if __name__ == "__main__":
     # print("关闭 DataNode %d 的Socket连接" % hostname)
 
 
-    # 4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
-    # 场景4： 各设备算力描述不同、通信资源不同，多层、差异数据交换， 池化层再次全部交换
-    # datanode 接受来自 namenode 的 全部数据 或者 部分差分数据，分情况进行推理，需要考虑数据的缓存与划分
-    # 连续接收 namenode 发来的计算请求，分情况 计算并且返回推理结果
-    print("进入计算场景 4")
-    print("#### 进入模型阶段推理 ####\n")
-    while True:
-        # 接受来自 namenode 发送的参数
-        start, end, recv_tensor = datanode.datanode_recv_data()
-        print ("接收来自 NameNode 的数据 recv_tensor：", recv_tensor.size())
-        print ("要求计算 %d - %d " % (start, end) )
-        print ("datanode.get_last_inference_layer() : ", datanode.get_last_inference_layer())
-
-        # 是否是第一层推理( 通过判断 datanode 设定的初始化 ) 或者是 池化层的后一层。需要接受可直接计算的 tensor
-        if ( datanode.get_last_inference_layer() == 0 ) or ( start - 1 in maxpool_layer ): # 当前判断条件还不确定
-            # recv_tensor为完整的计算tensor，不需要合并或者拆分
-            middle_output = inference_model(recv_tensor, start, end)
-            print ("计算第 %d 层的 middle_output:" % start , middle_output.size())
-            # 如果下一层是 maxpool， 需要将数据全部发送至 namenode
-            if end + 1 in maxpool_layer:
-                datanode.datanode_send_data(middle_output, start, end)
-                print("发送第 %d 层的 send_tensor:" % end, middle_output.size())
-            # 设置 计算记录 参数
-            datanode.set_last_inference_layer(end)
-        # 仅有上述一种情况，其他情况暂时不讨论
-
-        print("完成 %d - %d 的推理任务，并返回计算结果\n" % (start, end))
-        if end >= conv_length - 1:
-            print("DataNode %d 结束推理")
-            break
-    # 关闭已建立的连接
-    time.sleep(2)
-    datanode.close()
-    print("关闭 DataNode %d 的Socket连接" % datanode_name)
+    # # 4444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444444
+    # # 场景4： 各设备算力描述不同、通信资源不同，多层、差异数据交换， 池化层再次全部交换
+    # # datanode 接受来自 namenode 的 全部数据 或者 部分差分数据，分情况进行推理，需要考虑数据的缓存与划分
+    # # 连续接收 namenode 发来的计算请求，分情况 计算并且返回推理结果
+    # print("进入计算场景 4")
+    # print("#### 进入模型阶段推理 ####\n")
+    # while True:
+    #     # 接受来自 namenode 发送的参数
+    #     start, end, recv_tensor = datanode.datanode_recv_data()
+    #     print ("接收来自 NameNode 的数据 recv_tensor：", recv_tensor.size())
+    #     print ("要求计算 %d - %d " % (start, end) )
+    #     print ("datanode.get_last_inference_layer() : ", datanode.get_last_inference_layer())
+    #
+    #     # 是否是第一层推理( 通过判断 datanode 设定的初始化 ) 或者是 池化层的后一层。需要接受可直接计算的 tensor
+    #     if ( datanode.get_last_inference_layer() == 0 ) or ( start - 1 in maxpool_layer ): # 当前判断条件还不确定
+    #         # recv_tensor为完整的计算tensor，不需要合并或者拆分
+    #         middle_output = inference_model(recv_tensor, start, end)
+    #         print ("计算第 %d 层的 middle_output:" % start , middle_output.size())
+    #         # 如果下一层是 maxpool， 需要将数据全部发送至 namenode
+    #         if end + 1 in maxpool_layer:
+    #             datanode.datanode_send_data(middle_output, start, end)
+    #             print("发送第 %d 层的 send_tensor:" % end, middle_output.size())
+    #         # 设置 计算记录 参数
+    #         datanode.set_last_inference_layer(end)
+    #     # 仅有上述一种情况，其他情况暂时不讨论
+    #
+    #     print("完成 %d - %d 的推理任务，并返回计算结果\n" % (start, end))
+    #     if end >= conv_length - 1:
+    #         print("DataNode %d 结束推理")
+    #         break
+    # # 关闭已建立的连接
+    # time.sleep(2)
+    # datanode.close()
+    # print("关闭 DataNode %d 的Socket连接" % datanode_name)
 

@@ -1,4 +1,4 @@
-from other.network_and_computing_record import Network_And_Computing
+from network_and_computing_record import Network_And_Computing
 import sys
 sys.path.append("../..")
 sys.path.append("..")

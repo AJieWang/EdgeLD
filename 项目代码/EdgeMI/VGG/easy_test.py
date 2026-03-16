@@ -13,7 +13,7 @@ in_chanel = 64
 cross_layer = 1
 original_tensor = torch.rand(1, in_chanel, 224, 224)
 out_chanel = 64
-kernerl_size = 3
+kernel_size = 3
 # com_k值越小，算力越高，斜率的倒数表示算力,选择合适的算力机器，设置合适的带宽
 
 computing_power = [ [0.06245, 0.06207, 0.062103, 0.06166, 0.06166, 0.06166],
@@ -24,7 +24,7 @@ network_state = [10**6 * 2, 10**6 , 10**6 * 3, 10**6, 10**6 * 0.9, 10**6 * 1.5]
 
 input_num, input_chanel, height, width = original_tensor.size()
 # 暂时没有计入 width， 先计算其余值
-temp_flops = 2 * height *(in_chanel * kernerl_size * kernerl_size  + 1) * out_chanel
+temp_flops = 2 * height *(in_chanel * kernel_size * kernel_size  + 1) * out_chanel
 temp_num = input_num * in_chanel * height
 # 主要是针对 width 进行划分，考虑计算时间和通信时间
 com_k = computing_power[0]
@@ -46,19 +46,43 @@ for it in range(datanode_num):
 com_time = []
 trans_time_forward = []
 trans_time_backward = []
+trans_time = []
 total_time = []
+
+# 定义 时间模型，T = a * x + b + c，a * x + b为计算时间，c为通信时间
 for it in range(datanode_num):
-    # 初始化
-    com_time.append(com_k[it] * (temp_flops * width_list[it] / 10 ** 6) + com_b[it])
+    # 计算时间
+    com_t = com_k[it] * (temp_flops * width_list[it] / 10 ** 6) + com_b[it]
+    com_time.append(com_t)
+
+    # 通信时间（前向+反向）
     if it == 0 or it == datanode_num - 1:
-        trans_time_forward.append((temp_num * (width_list[it] + cross_layer) * 4) / network_state[it] * (10 ** 3))
-        trans_time_backward.append((temp_num * cross_layer * 4) / network_state[it] * (10 ** 3))
+        trans_f = (temp_num * (width_list[it] + cross_layer) * 4) / network_state[it] * (10 ** 3)
+        trans_b = (temp_num * cross_layer * 4) / network_state[it] * (10 ** 3)
     else:
-        trans_time_forward.append((temp_num * (width_list[it] + 2 * cross_layer) * 4) / network_state[it] * (10 ** 3))
-        trans_time_backward.append((temp_num * cross_layer * 2 * 4) / network_state[it] * (10 ** 3))
-    total_time.append(com_time[it] + trans_time_forward[it] + trans_time_backward[it])
-# 定义 时间模型，T = a * x + b + c，a * x + b为计算时间，c为通信时间，
-print (total_time)
+        trans_f = (temp_num * (width_list[it] + 2 * cross_layer) * 4) / network_state[it] * (10 ** 3)
+        trans_b = (temp_num * cross_layer * 2 * 4) / network_state[it] * (10 ** 3)
+    trans_time_forward.append(trans_f)
+    trans_time_backward.append(trans_b)
+    trans_time.append(trans_f + trans_b)  # 总通信时间
+
+    # 总时间（计算+通信）
+    total_time.append(com_t + trans_f + trans_b)
+
+print("初始总时间：", total_time)
+
+# for it in range(datanode_num):
+#     # 初始化
+#     com_time.append(com_k[it] * (temp_flops * width_list[it] / 10 ** 6) + com_b[it])
+#     if it == 0 or it == datanode_num - 1:
+#         trans_time_forward.append((temp_num * (width_list[it] + cross_layer) * 4) / network_state[it] * (10 ** 3))
+#         trans_time_backward.append((temp_num * cross_layer * 4) / network_state[it] * (10 ** 3))
+#     else:
+#         trans_time_forward.append((temp_num * (width_list[it] + 2 * cross_layer) * 4) / network_state[it] * (10 ** 3))
+#         trans_time_backward.append((temp_num * cross_layer * 2 * 4) / network_state[it] * (10 ** 3))
+#     total_time.append(com_time[it] + trans_time_forward[it] + trans_time_backward[it])
+# # 定义 时间模型，T = a * x + b + c，a * x + b为计算时间，c为通信时间，
+# print (total_time)
 
 
 # 开始迭代求最优情况
