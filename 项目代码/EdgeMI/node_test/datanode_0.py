@@ -45,6 +45,9 @@ if __name__ == "__main__":
         print("#### 进入模型阶段推理 ####")
         # 接受来自 namenode 发送的参数
         start, end, recv_tensor = datanode.datanode_recv_data()
+
+        recv_tensor = recv_tensor.unsqueeze(0) # Ajie add: convert  [3, 448, 448] to [1, 3, 448, 448]）
+
         middle_output = inference_model(recv_tensor, start, end)
         # print ("middle_output:", middle_output.size())
         datanode.datanode_send_data(middle_output, start, end)

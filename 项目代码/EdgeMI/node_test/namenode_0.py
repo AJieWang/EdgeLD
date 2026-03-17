@@ -55,7 +55,7 @@ for j in range(datanode_num):
 
 def send_total_data(datanode_name, input_tensor ,start, end):
     # 发送 total 数据
-    namenode.namenode_send_data(datanode_name = datanode_name, input_tensor = input_tensor, start = start, end = end )
+        namenode.namenode_send_data(datanode_name = datanode_name, input_tensor = input_tensor, start = start, end = end )
     # 成功发送并接受计算结果，主线程等待datanode完成
 def send_part_data(datanode_name, input_tensor, start, end):
     # 发送 part 数据
@@ -100,7 +100,8 @@ if __name__ == "__main__":
             for i in range(datanode_num):
                 # 创建线程发送，线程参数包括：datanode编号， 计算数据（start， end， send_tensor）, 返回
                 # print ("sned:", i)
-                thread[i] = threading.Thread(target = send_total_data, args=(namenode, i, layer_it, layer_it, divided_tensor[i]))
+                # thread[i] = threading.Thread(target = send_total_data, args=(namenode, i, layer_it, layer_it, divided_tensor[i]))
+                thread[i] = threading.Thread(target = send_total_data, args=(i, divided_tensor[i], layer_it, layer_it))
                 thread[i].start()
             # 等待所有线程完成
             for i in range(datanode_num):

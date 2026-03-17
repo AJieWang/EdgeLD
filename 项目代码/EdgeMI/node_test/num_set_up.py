@@ -1,7 +1,7 @@
 
 datanode_num_temp = 1
 class Num_set_up(object):
-    def __int__(self ):
+    def __init__(self ):
         self.namenode_num = 1
         self.datanode_num = datanode_num_temp
     def set_namenode_num(self, num):
