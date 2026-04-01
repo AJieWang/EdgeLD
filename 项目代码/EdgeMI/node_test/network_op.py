@@ -15,6 +15,9 @@ namenode_ip = "192.168.202.129"
 datanode_ip = ["192.168.202.130", "192.168.202.131", "192.168.202.132", "192.168.202.133", "192.168.202.134", "192.168.202.135"]
 datanode_port = [10000, 10001, 10002, 10003, 10004, 10005]
 
+namenode_pre_send = []
+datanode_pre_send = []
+after_receive = []
 class Network_init_namenode():
     def __init__(self, namenode_num = 1, datanode_num = 1):
         super(Network_init_namenode, self).__init__()
@@ -53,7 +56,8 @@ class Network_init_namenode():
         #     self.recv_tensor_temp_list[i] = torch.rand(1, 1, 1, 1)
         return temp
 
-    def namenode_send_data(self, datanode_name, input_tensor, start, end):
+    def namenode_send_data(self, datanode_name, input_tensor, start, end, transfer_time):
+        pre_send_time = time.time()
         # 先发送数据长度，再发送数据
         input_numpy = input_tensor.detach().numpy()
         start = str(start).encode(encoding='utf-8')
@@ -67,7 +71,16 @@ class Network_init_namenode():
         self.client_socket[datanode_name].send(send_data_len)
         time.sleep(0.01)
         # 发送数据
+
+        transfer_start_time = time.time()
+        temp_time = transfer_start_time - pre_send_time
+        namenode_pre_send.append(temp_time)
+        print('NameNode Pre send time: %0.3fs, Total pre send time: %0.3fs' % (temp_time, sum(namenode_pre_send)))
+
         self.client_socket[datanode_name].sendall(send_data)
+
+        transfer_time.append(time.time() - transfer_start_time)
+
         # print("namenode socket 数据发送完成")
         # print("send_return_info: ", send_return_info)
 
@@ -82,6 +95,7 @@ class Network_init_namenode():
             recv_data += recv_data_temp
         # print("最终接受数据的长度：", len(recv_data), recv_data_len)
 
+        after_receive_start_time = time.time()
         split_list = recv_data.split(b'@#$%')
         recv_start = int(str(split_list[0], encoding="UTF-8"))
         recv_end = int(str(split_list[1], encoding="UTF-8"))
@@ -92,6 +106,10 @@ class Network_init_namenode():
         recv_numpy = np.reshape(recv_numpy, newshape = recv_numpy_size)
         recv_tensor = torch.from_numpy(recv_numpy)
         self.recv_tensor_temp_list[datanode_name] = recv_tensor
+
+        temp_time = time.time() - after_receive_start_time
+        after_receive.append(temp_time)
+        print('NameNode After receive time: %0.3fs, Total after receive time: %0.3fs' % (temp_time, sum(after_receive)))
         return recv_start, recv_end, recv_tensor
 
     def namenode_recv_data(self, datanode_name):
@@ -193,9 +211,10 @@ class Network_init_datanode():
             self.divied_tensor_list[1] = torch.rand(1, 1, 1, 1)
 
 
-    def datanode_send_data(self, input_tensor, start=0, end=0):
+    def datanode_send_data(self, input_tensor, transfer_time, start=0, end=0):
         # 先发送数据长度，再发送数据
         # print ("datanode_socket 数据发送开始")
+        pre_send_time = time.time()
         input_numpy = input_tensor.detach().numpy()
 
         start = str(start).encode(encoding="UTF-8")
@@ -210,10 +229,19 @@ class Network_init_datanode():
         self.datanode_socket.send(send_data_len)
         time.sleep(0.01)
         # 发送数据
+        temp_time = time.time() - pre_send_time
+        datanode_pre_send.append(temp_time)
+        print('DataNode Pre send time: %0.3fs, Total pre send time: %0.3fs' % (temp_time, sum(datanode_pre_send)))
+
+        transfer_start_time = time.time()
+
         self.datanode_socket.sendall(send_data)
+
+        transfer_time.append(time.time() - transfer_start_time)
+
         # print ("datanode_socket 数据发送完成")
 
-    def datanode_recv_data(self):
+    def datanode_recv_data(self, pre_conv):
         # 先接受长度，再接收数据。
         data_total_len = b''
         while True:
@@ -221,6 +249,8 @@ class Network_init_datanode():
             if len(data) != 0:
                 data_total_len = data
                 break
+        pre_conv_start_time = time.time()
+
         print ("DataNode recv data length: ", str(data_total_len, encoding='utf-8'))
         data_total_len = int(str(data_total_len, encoding="UTF-8"))
         print("DataNode recv data length: ", data_total_len)
@@ -241,6 +271,8 @@ class Network_init_datanode():
         recv_numpy = np.frombuffer(split_list[3], dtype = np.float32)
         recv_numpy = np.reshape(recv_numpy, newshape = recv_numpy_size)
         recv_tensor = torch.from_numpy(recv_numpy)
+
+        pre_conv.append(time.time() - pre_conv_start_time)
         return start, end, recv_tensor
 
     def close(self):

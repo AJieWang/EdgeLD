@@ -32,7 +32,9 @@ total_length = inference_model.get_total_length()
 # 3、各设备算力描述不同、通信资源不同，单层、差异数据交换， 池化层非全部全部交换
 # 4、各设备算力描述不同、通信资源不同，多层、差异数据交换， 池化层再次全部交换
 
-
+pre_conv = []
+# conv_time = []
+transfer_time = []
 
 if __name__ == "__main__":
 
@@ -44,18 +46,32 @@ if __name__ == "__main__":
     while True:
         print("#### 进入模型阶段推理 ####")
         # 接受来自 namenode 发送的参数
-        start, end, recv_tensor = datanode.datanode_recv_data()
+        start, end, recv_tensor = datanode.datanode_recv_data(pre_conv)
 
         recv_tensor = recv_tensor.unsqueeze(0) # Ajie add: convert  [3, 448, 448] to [1, 3, 448, 448]）
 
+        conv_start_time = time.time()
         middle_output = inference_model(recv_tensor, start, end)
+        conv_end_time = time.time()
+        # temp_time = conv_end_time - conv_start_time
+        # conv_time.append(temp_time)
+        print('DataNode_0 Convolution time: %0.3fs, start time: %0.3fs, end time: %0.3fs' % (conv_end_time - conv_start_time, conv_start_time, conv_end_time))
+
         # print ("middle_output:", middle_output.size())
-        datanode.datanode_send_data(middle_output, start, end)
+        datanode.datanode_send_data(middle_output, transfer_time, start, end)
         print ("完成 %d - %d 的推理任务，并返回推理结果" %(start, end) )
         if end >= conv_length - 1:
             print("DataNode %d 结束推理")
             break
         # break
+    # for i in range(len(pre_conv)): print("pre_conv: ", pre_conv[i])
+    print('DataNode_0 Pre_conv time: %0.3fs, Pre_conv counts: %d' % (sum(pre_conv), len(pre_conv)))
+
+    # # for i in range(len(conv_time)): print("conv_time: ", conv_time[i])
+    # print('DataNode_0 Convolution time: %0.3fs, Convolution counts: %d' % (sum(conv_time), len(conv_time)))
+
+    # for i in range(len(transfer_time)): print("transfer_time: ", transfer_time[i])
+    print('DataNode_0 Transfer time: %0.3fs, Transfer counts: %d' % (sum(transfer_time), len(transfer_time)))
     # 关闭已建立的连接
     time.sleep(2)
     datanode.close()
