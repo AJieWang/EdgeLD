@@ -1,0 +1,375 @@
+----------------------------------1-------------------------------------
+NameNode 开始初始化
+Hello NameNode, I have received your hello world, I'm DateNode 0
+NameNode 初始化完成
+cross_layer: 2
+b'1' b'2' b'1*3*224*224'
+NameNode Pre send time: 0.025s, Total pre send time: 0.025s
+NameNode After receive time: 0.052s, Total after receive time: 0.052s
+合并后的 middle_output： torch.Size([1, 64, 224, 224])
+NameNode不参与第 2 层计算
+池化层输出数据大小： torch.Size([1, 64, 112, 112])
+cross_layer: 2
+b'4' b'5' b'1*64*112*112'
+NameNode Pre send time: 0.016s, Total pre send time: 0.041s
+NameNode After receive time: 0.013s, Total after receive time: 0.066s
+合并后的 middle_output： torch.Size([1, 128, 112, 112])
+NameNode不参与第 5 层计算
+池化层输出数据大小： torch.Size([1, 128, 56, 56])
+cross_layer: 3
+b'7' b'9' b'1*128*56*56'
+NameNode Pre send time: 0.011s, Total pre send time: 0.053s
+NameNode After receive time: 0.005s, Total after receive time: 0.071s
+合并后的 middle_output： torch.Size([1, 256, 56, 56])
+NameNode不参与第 8 层计算
+NameNode不参与第 9 层计算
+池化层输出数据大小： torch.Size([1, 256, 28, 28])
+cross_layer: 3
+b'11' b'13' b'1*256*28*28'
+NameNode Pre send time: 0.011s, Total pre send time: 0.064s
+NameNode After receive time: 0.003s, Total after receive time: 0.074s
+合并后的 middle_output： torch.Size([1, 512, 28, 28])
+NameNode不参与第 12 层计算
+NameNode不参与第 13 层计算
+池化层输出数据大小： torch.Size([1, 512, 14, 14])
+cross_layer: 3
+b'15' b'17' b'1*512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.075s
+NameNode After receive time: 0.001s, Total after receive time: 0.075s
+合并后的 middle_output： torch.Size([1, 512, 14, 14])
+NameNode不参与第 16 层计算
+NameNode不参与第 17 层计算
+计算全连接层
+NameNode 结束计算
+Final Output:  torch.Size([1, 100])
+Used Time: 5.633s
+transfer_time:  0.003977060317993164
+transfer_time:  0.005517721176147461
+transfer_time:  0.003294229507446289
+transfer_time:  0.0019218921661376953
+transfer_time:  0.0010349750518798828
+NameNode Transfer time: 0.016s, Transfer counts: 5
+关闭 NameNode 所有 Socket 连接
+*************************************************************************
+DataNode 0 开始初始化
+Hello DataNode 0, I'm NameNode
+DataNode 0 初始化完成
+
+进入计算场景 4
+#### 进入模型阶段推理 ####
+
+DataNode recv data length:  602137
+DataNode recv data length:  602137
+最终接受数据的长度： 602137 602137
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 3, 224, 224])
+要求计算 1 - 2 
+datanode.get_last_inference_layer() :  0
+计算第 1 层的 middle_output: torch.Size([1, 64, 224, 224])
+DataNode Pre send time: 0.042s, Total pre send time: 0.042s
+发送第 2 层的 send_tensor: torch.Size([1, 64, 224, 224])
+完成 1 - 2 的推理任务，并返回计算结果
+
+DataNode recv data length:  3211290
+DataNode recv data length:  3211290
+最终接受数据的长度： 3211290 3211290
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 64, 112, 112])
+要求计算 4 - 5 
+datanode.get_last_inference_layer() :  2
+计算第 4 层的 middle_output: torch.Size([1, 128, 112, 112])
+DataNode Pre send time: 0.013s, Total pre send time: 0.055s
+发送第 5 层的 send_tensor: torch.Size([1, 128, 112, 112])
+完成 4 - 5 的推理任务，并返回计算结果
+
+DataNode recv data length:  1605657
+DataNode recv data length:  1605657
+最终接受数据的长度： 1605657 1605657
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 128, 56, 56])
+要求计算 7 - 9 
+datanode.get_last_inference_layer() :  5
+计算第 7 层的 middle_output: torch.Size([1, 256, 56, 56])
+DataNode Pre send time: 0.012s, Total pre send time: 0.067s
+发送第 9 层的 send_tensor: torch.Size([1, 256, 56, 56])
+完成 7 - 9 的推理任务，并返回计算结果
+
+DataNode recv data length:  802843
+DataNode recv data length:  802843
+最终接受数据的长度： 802843 802843
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 256, 28, 28])
+要求计算 11 - 13 
+datanode.get_last_inference_layer() :  9
+计算第 11 层的 middle_output: torch.Size([1, 512, 28, 28])
+DataNode Pre send time: 0.012s, Total pre send time: 0.079s
+发送第 13 层的 send_tensor: torch.Size([1, 512, 28, 28])
+完成 11 - 13 的推理任务，并返回计算结果
+
+DataNode recv data length:  401435
+DataNode recv data length:  401435
+最终接受数据的长度： 401435 401435
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 512, 14, 14])
+要求计算 15 - 17 
+datanode.get_last_inference_layer() :  13
+计算第 15 层的 middle_output: torch.Size([1, 512, 14, 14])
+DataNode Pre send time: 0.010s, Total pre send time: 0.089s
+发送第 17 层的 send_tensor: torch.Size([1, 512, 14, 14])
+完成 15 - 17 的推理任务，并返回计算结果
+
+DataNode %d 结束推理
+transfer_time:  1.1018359661102295
+transfer_time:  0.008920669555664062
+transfer_time:  0.003017425537109375
+transfer_time:  0.0027222633361816406
+transfer_time:  0.0007963180541992188
+DataNode_0 Transfer time: 1.117s, Transfer counts: 5
+关闭 DataNode 0 的Socket连接
+----------------------------------2-------------------------------------
+NameNode 开始初始化
+Hello NameNode, I have received your hello world, I'm DateNode 0
+NameNode 初始化完成
+cross_layer: 2
+b'1' b'2' b'1*3*224*224'
+NameNode Pre send time: 0.026s, Total pre send time: 0.026s
+NameNode After receive time: 0.044s, Total after receive time: 0.044s
+合并后的 middle_output： torch.Size([1, 64, 224, 224])
+NameNode不参与第 2 层计算
+池化层输出数据大小： torch.Size([1, 64, 112, 112])
+cross_layer: 2
+b'4' b'5' b'1*64*112*112'
+NameNode Pre send time: 0.027s, Total pre send time: 0.053s
+NameNode After receive time: 0.033s, Total after receive time: 0.077s
+合并后的 middle_output： torch.Size([1, 128, 112, 112])
+NameNode不参与第 5 层计算
+池化层输出数据大小： torch.Size([1, 128, 56, 56])
+cross_layer: 3
+b'7' b'9' b'1*128*56*56'
+NameNode Pre send time: 0.019s, Total pre send time: 0.072s
+NameNode After receive time: 0.006s, Total after receive time: 0.083s
+合并后的 middle_output： torch.Size([1, 256, 56, 56])
+NameNode不参与第 8 层计算
+NameNode不参与第 9 层计算
+池化层输出数据大小： torch.Size([1, 256, 28, 28])
+cross_layer: 3
+b'11' b'13' b'1*256*28*28'
+NameNode Pre send time: 0.012s, Total pre send time: 0.084s
+NameNode After receive time: 0.003s, Total after receive time: 0.086s
+合并后的 middle_output： torch.Size([1, 512, 28, 28])
+NameNode不参与第 12 层计算
+NameNode不参与第 13 层计算
+池化层输出数据大小： torch.Size([1, 512, 14, 14])
+cross_layer: 3
+b'15' b'17' b'1*512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.095s
+NameNode After receive time: 0.001s, Total after receive time: 0.087s
+合并后的 middle_output： torch.Size([1, 512, 14, 14])
+NameNode不参与第 16 层计算
+NameNode不参与第 17 层计算
+计算全连接层
+NameNode 结束计算
+Final Output:  torch.Size([1, 100])
+Used Time: 5.802s
+transfer_time:  0.002338409423828125
+transfer_time:  0.005676746368408203
+transfer_time:  0.0011191368103027344
+transfer_time:  0.0016143321990966797
+transfer_time:  0.0014498233795166016
+NameNode Transfer time: 0.012s, Transfer counts: 5
+关闭 NameNode 所有 Socket 连接
+*************************************************************************
+DataNode 0 开始初始化
+Hello DataNode 0, I'm NameNode
+DataNode 0 初始化完成
+
+进入计算场景 4
+#### 进入模型阶段推理 ####
+
+DataNode recv data length:  602137
+DataNode recv data length:  602137
+最终接受数据的长度： 602137 602137
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 3, 224, 224])
+要求计算 1 - 2 
+datanode.get_last_inference_layer() :  0
+计算第 1 层的 middle_output: torch.Size([1, 64, 224, 224])
+DataNode Pre send time: 0.052s, Total pre send time: 0.052s
+发送第 2 层的 send_tensor: torch.Size([1, 64, 224, 224])
+完成 1 - 2 的推理任务，并返回计算结果
+
+DataNode recv data length:  3211290
+DataNode recv data length:  3211290
+最终接受数据的长度： 3211290 3211290
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 64, 112, 112])
+要求计算 4 - 5 
+datanode.get_last_inference_layer() :  2
+计算第 4 层的 middle_output: torch.Size([1, 128, 112, 112])
+DataNode Pre send time: 0.012s, Total pre send time: 0.064s
+发送第 5 层的 send_tensor: torch.Size([1, 128, 112, 112])
+完成 4 - 5 的推理任务，并返回计算结果
+
+DataNode recv data length:  1605657
+DataNode recv data length:  1605657
+最终接受数据的长度： 1605657 1605657
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 128, 56, 56])
+要求计算 7 - 9 
+datanode.get_last_inference_layer() :  5
+计算第 7 层的 middle_output: torch.Size([1, 256, 56, 56])
+DataNode Pre send time: 0.012s, Total pre send time: 0.076s
+发送第 9 层的 send_tensor: torch.Size([1, 256, 56, 56])
+完成 7 - 9 的推理任务，并返回计算结果
+
+DataNode recv data length:  802843
+DataNode recv data length:  802843
+最终接受数据的长度： 802843 802843
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 256, 28, 28])
+要求计算 11 - 13 
+datanode.get_last_inference_layer() :  9
+计算第 11 层的 middle_output: torch.Size([1, 512, 28, 28])
+DataNode Pre send time: 0.011s, Total pre send time: 0.087s
+发送第 13 层的 send_tensor: torch.Size([1, 512, 28, 28])
+完成 11 - 13 的推理任务，并返回计算结果
+
+DataNode recv data length:  401435
+DataNode recv data length:  401435
+最终接受数据的长度： 401435 401435
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 512, 14, 14])
+要求计算 15 - 17 
+datanode.get_last_inference_layer() :  13
+计算第 15 层的 middle_output: torch.Size([1, 512, 14, 14])
+DataNode Pre send time: 0.010s, Total pre send time: 0.097s
+发送第 17 层的 send_tensor: torch.Size([1, 512, 14, 14])
+完成 15 - 17 的推理任务，并返回计算结果
+
+DataNode %d 结束推理
+transfer_time:  0.7419452667236328
+transfer_time:  0.010456562042236328
+transfer_time:  0.002931356430053711
+transfer_time:  0.0038900375366210938
+transfer_time:  0.0010368824005126953
+DataNode_0 Transfer time: 0.760s, Transfer counts: 5
+关闭 DataNode 0 的Socket连接
+----------------------------------3-------------------------------------
+NameNode 开始初始化
+Hello NameNode, I have received your hello world, I'm DateNode 0
+NameNode 初始化完成
+cross_layer: 2
+b'1' b'2' b'1*3*224*224'
+NameNode Pre send time: 0.020s, Total pre send time: 0.020s
+NameNode After receive time: 0.039s, Total after receive time: 0.039s
+合并后的 middle_output： torch.Size([1, 64, 224, 224])
+NameNode不参与第 2 层计算
+池化层输出数据大小： torch.Size([1, 64, 112, 112])
+cross_layer: 2
+b'4' b'5' b'1*64*112*112'
+NameNode Pre send time: 0.018s, Total pre send time: 0.038s
+NameNode After receive time: 0.021s, Total after receive time: 0.059s
+合并后的 middle_output： torch.Size([1, 128, 112, 112])
+NameNode不参与第 5 层计算
+池化层输出数据大小： torch.Size([1, 128, 56, 56])
+cross_layer: 3
+b'7' b'9' b'1*128*56*56'
+NameNode Pre send time: 0.013s, Total pre send time: 0.051s
+NameNode After receive time: 0.006s, Total after receive time: 0.065s
+合并后的 middle_output： torch.Size([1, 256, 56, 56])
+NameNode不参与第 8 层计算
+NameNode不参与第 9 层计算
+池化层输出数据大小： torch.Size([1, 256, 28, 28])
+cross_layer: 3
+b'11' b'13' b'1*256*28*28'
+NameNode Pre send time: 0.010s, Total pre send time: 0.061s
+NameNode After receive time: 0.003s, Total after receive time: 0.068s
+合并后的 middle_output： torch.Size([1, 512, 28, 28])
+NameNode不参与第 12 层计算
+NameNode不参与第 13 层计算
+池化层输出数据大小： torch.Size([1, 512, 14, 14])
+cross_layer: 3
+b'15' b'17' b'1*512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.072s
+NameNode After receive time: 0.001s, Total after receive time: 0.068s
+合并后的 middle_output： torch.Size([1, 512, 14, 14])
+NameNode不参与第 16 层计算
+NameNode不参与第 17 层计算
+计算全连接层
+NameNode 结束计算
+Final Output:  torch.Size([1, 100])
+Used Time: 4.875s
+transfer_time:  0.0030133724212646484
+transfer_time:  0.00940084457397461
+transfer_time:  0.0022797584533691406
+transfer_time:  0.0016951560974121094
+transfer_time:  0.001474618911743164
+NameNode Transfer time: 0.018s, Transfer counts: 5
+关闭 NameNode 所有 Socket 连接
+*************************************************************************
+DataNode 0 开始初始化
+Hello DataNode 0, I'm NameNode
+DataNode 0 初始化完成
+
+进入计算场景 4
+#### 进入模型阶段推理 ####
+
+DataNode recv data length:  602137
+DataNode recv data length:  602137
+最终接受数据的长度： 602137 602137
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 3, 224, 224])
+要求计算 1 - 2 
+datanode.get_last_inference_layer() :  0
+计算第 1 层的 middle_output: torch.Size([1, 64, 224, 224])
+DataNode Pre send time: 0.058s, Total pre send time: 0.058s
+发送第 2 层的 send_tensor: torch.Size([1, 64, 224, 224])
+完成 1 - 2 的推理任务，并返回计算结果
+
+DataNode recv data length:  3211290
+DataNode recv data length:  3211290
+最终接受数据的长度： 3211290 3211290
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 64, 112, 112])
+要求计算 4 - 5 
+datanode.get_last_inference_layer() :  2
+计算第 4 层的 middle_output: torch.Size([1, 128, 112, 112])
+DataNode Pre send time: 0.013s, Total pre send time: 0.070s
+发送第 5 层的 send_tensor: torch.Size([1, 128, 112, 112])
+完成 4 - 5 的推理任务，并返回计算结果
+
+DataNode recv data length:  1605657
+DataNode recv data length:  1605657
+最终接受数据的长度： 1605657 1605657
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 128, 56, 56])
+要求计算 7 - 9 
+datanode.get_last_inference_layer() :  5
+计算第 7 层的 middle_output: torch.Size([1, 256, 56, 56])
+DataNode Pre send time: 0.012s, Total pre send time: 0.082s
+发送第 9 层的 send_tensor: torch.Size([1, 256, 56, 56])
+完成 7 - 9 的推理任务，并返回计算结果
+
+DataNode recv data length:  802843
+DataNode recv data length:  802843
+最终接受数据的长度： 802843 802843
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 256, 28, 28])
+要求计算 11 - 13 
+datanode.get_last_inference_layer() :  9
+计算第 11 层的 middle_output: torch.Size([1, 512, 28, 28])
+DataNode Pre send time: 0.011s, Total pre send time: 0.093s
+发送第 13 层的 send_tensor: torch.Size([1, 512, 28, 28])
+完成 11 - 13 的推理任务，并返回计算结果
+
+DataNode recv data length:  401435
+DataNode recv data length:  401435
+最终接受数据的长度： 401435 401435
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 512, 14, 14])
+要求计算 15 - 17 
+datanode.get_last_inference_layer() :  13
+计算第 15 层的 middle_output: torch.Size([1, 512, 14, 14])
+DataNode Pre send time: 0.011s, Total pre send time: 0.104s
+发送第 17 层的 send_tensor: torch.Size([1, 512, 14, 14])
+完成 15 - 17 的推理任务，并返回计算结果
+
+DataNode %d 结束推理
+transfer_time:  1.7973618507385254
+transfer_time:  0.022501468658447266
+transfer_time:  0.006186723709106445
+transfer_time:  0.0011703968048095703
+transfer_time:  0.0008513927459716797
+DataNode_0 Transfer time: 1.828s, Transfer counts: 5
+关闭 DataNode 0 的Socket连接
+
+
+
+
+
+

@@ -6,6 +6,14 @@ import torch
 import torch.nn as nn
 import time
 
+COMPUTE_CONV_BLOCKS = {
+    1: 3,
+    4: 6,
+    7: 10,
+    11: 14,
+    15: 18,
+}
+
 class VGG_model(nn.Module):
     def __init__(self, num_classes = 100, init_weights = True):
         super(VGG_model, self).__init__()
@@ -169,29 +177,48 @@ class VGG_model(nn.Module):
         if init_weights:
             self._initialize_weights()
 
+    # # input 输入， start开始层， end结束层（包括）。"全连接层" 暂时不写创新的地方
+    # def forward(self, x, start = 0, end = 0):
+    #     if (start > end or start <= 0 or end > self.module_total_length):
+    #         print ("输入参数有误，检查后重新输入")
+    #         return x
+    #     # 全部计算在“卷积层”
+    #     elif start < self.module_conv_length and end <= self.module_conv_length:
+    #         for i in range(start, end + 1, 1):
+    #             x = self.module_list[i](x)
+    #         return x
+    #     # 全部计算在“全连接层”
+    #     elif start > self.module_conv_length:
+    #         for i in range(start, end + 1, 1):
+    #             x = self.module_list[i](x)
+    #         return x
+    #     # 计算在“卷积层”和“全连接层”
+    #     else:
+    #         for i in range(start, end + 1, 1):
+    #             x = self.module_list[i](x)
+    #             if i == self.module_conv_length:
+    #                 x = self.avgpool(x)
+    #                 x = torch.flatten(x, 1)
+    #             # print (x.size())
+    #         return x
+
     # input 输入， start开始层， end结束层（包括）。"全连接层" 暂时不写创新的地方
     def forward(self, x, start = 0, end = 0):
         if (start > end or start <= 0 or end > self.module_total_length):
             print ("输入参数有误，检查后重新输入")
             return x
         # 全部计算在“卷积层”
-        elif start < self.module_conv_length and end <= self.module_conv_length:
+        elif start <= self.module_conv_length and end <= self.module_conv_length:
             for i in range(start, end + 1, 1):
                 x = self.module_list[i](x)
             return x
         # 全部计算在“全连接层”
         elif start > self.module_conv_length:
+            if start == end and start == self.module_conv_length + 1:
+                x = self.avgpool(x)
+                x = torch.flatten(x, 1)
             for i in range(start, end + 1, 1):
                 x = self.module_list[i](x)
-            return x
-        # 计算在“卷积层”和“全连接层”
-        else:
-            for i in range(start, end + 1, 1):
-                x = self.module_list[i](x)
-                if i == self.module_conv_length:
-                    x = self.avgpool(x)
-                    x = torch.flatten(x, 1)
-                # print (x.size())
             return x
 
 

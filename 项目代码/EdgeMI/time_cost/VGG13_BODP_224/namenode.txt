@@ -1,0 +1,151 @@
+========== 第 4 轮运行 ==========
+b'1' b'1' b'3*224*224'
+NameNode Pre send time: 0.012s, Total pre send time: 0.440s
+NameNode After receive time: 0.025s, Total after receive time: 0.295s
+第 1 层完成，输出形状：torch.Size([1, 64, 224, 224])
+b'2' b'2' b'64*224*224'
+NameNode Pre send time: 0.134s, Total pre send time: 0.573s
+NameNode After receive time: 0.022s, Total after receive time: 0.317s
+第 2 层完成，输出形状：torch.Size([1, 64, 224, 224])
+池化层耗时：0.090s
+第 3 层完成，输出形状：torch.Size([1, 64, 112, 112])
+b'4' b'4' b'64*112*112'
+NameNode Pre send time: 0.013s, Total pre send time: 0.586s
+NameNode After receive time: 0.010s, Total after receive time: 0.327s
+第 4 层完成，输出形状：torch.Size([1, 128, 112, 112])
+b'5' b'5' b'128*112*112'
+NameNode Pre send time: 0.013s, Total pre send time: 0.599s
+NameNode After receive time: 0.010s, Total after receive time: 0.337s
+第 5 层完成，输出形状：torch.Size([1, 128, 112, 112])
+池化层耗时：0.012s
+第 6 层完成，输出形状：torch.Size([1, 128, 56, 56])
+b'7' b'7' b'128*56*56'
+NameNode Pre send time: 0.011s, Total pre send time: 0.610s
+NameNode After receive time: 0.005s, Total after receive time: 0.342s
+第 7 层完成，输出形状：torch.Size([1, 256, 56, 56])
+b'8' b'8' b'256*56*56'
+NameNode Pre send time: 0.012s, Total pre send time: 0.622s
+NameNode After receive time: 0.006s, Total after receive time: 0.348s
+第 8 层完成，输出形状：torch.Size([1, 256, 56, 56])
+池化层耗时：0.003s
+第 9 层完成，输出形状：torch.Size([1, 256, 28, 28])
+b'10' b'10' b'256*28*28'
+NameNode Pre send time: 0.011s, Total pre send time: 0.633s
+NameNode After receive time: 0.003s, Total after receive time: 0.351s
+第 10 层完成，输出形状：torch.Size([1, 512, 28, 28])
+b'11' b'11' b'512*28*28'
+NameNode Pre send time: 0.011s, Total pre send time: 0.644s
+NameNode After receive time: 0.003s, Total after receive time: 0.354s
+第 11 层完成，输出形状：torch.Size([1, 512, 28, 28])
+池化层耗时：0.002s
+第 12 层完成，输出形状：torch.Size([1, 512, 14, 14])
+b'13' b'13' b'512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.655s
+NameNode After receive time: 0.001s, Total after receive time: 0.355s
+第 13 层完成，输出形状：torch.Size([1, 512, 14, 14])
+b'14' b'14' b'512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.666s
+NameNode After receive time: 0.001s, Total after receive time: 0.355s
+第 14 层完成，输出形状：torch.Size([1, 512, 14, 14])
+池化层耗时：0.001s
+第 15 层完成，输出形状：torch.Size([1, 512, 7, 7])
+全连接层耗时：1.876s
+第 16 层完成，输出形状：torch.Size([1, 4096])
+全连接层耗时：0.339s
+第 17 层完成，输出形状：torch.Size([1, 4096])
+全连接层耗时：0.005s
+第 18 层完成，输出形状：torch.Size([1, 100])
+
+第 4 轮完成
+总耗时：7.082s | 总传输耗时：0.261s
+
+第 0 轮为有效结果, 输出时间
+Thread time: 4.732s, Thread counts: 10
+transfer_time:  0.0012240409851074219
+transfer_time:  0.22986125946044922
+transfer_time:  0.0031409263610839844
+transfer_time:  0.010080099105834961
+transfer_time:  0.0035440921783447266
+transfer_time:  0.006105184555053711
+transfer_time:  0.0018303394317626953
+transfer_time:  0.003069639205932617
+transfer_time:  0.0011878013610839844
+transfer_time:  0.0010149478912353516
+NameNode Transfer time: 0.261s, Transfer counts: 10
+
+========== 第 5 轮运行 ==========
+b'1' b'1' b'3*224*224'
+NameNode Pre send time: 0.012s, Total pre send time: 0.678s
+NameNode After receive time: 0.023s, Total after receive time: 0.378s
+第 1 层完成，输出形状：torch.Size([1, 64, 224, 224])
+b'2' b'2' b'64*224*224'
+NameNode Pre send time: 0.149s, Total pre send time: 0.827s
+NameNode After receive time: 0.021s, Total after receive time: 0.399s
+第 2 层完成，输出形状：torch.Size([1, 64, 224, 224])
+池化层耗时：0.031s
+第 3 层完成，输出形状：torch.Size([1, 64, 112, 112])
+b'4' b'4' b'64*112*112'
+NameNode Pre send time: 0.011s, Total pre send time: 0.838s
+NameNode After receive time: 0.010s, Total after receive time: 0.409s
+第 4 层完成，输出形状：torch.Size([1, 128, 112, 112])
+b'5' b'5' b'128*112*112'
+NameNode Pre send time: 0.013s, Total pre send time: 0.851s
+NameNode After receive time: 0.009s, Total after receive time: 0.419s
+第 5 层完成，输出形状：torch.Size([1, 128, 112, 112])
+池化层耗时：0.011s
+第 6 层完成，输出形状：torch.Size([1, 128, 56, 56])
+b'7' b'7' b'128*56*56'
+NameNode Pre send time: 0.012s, Total pre send time: 0.863s
+NameNode After receive time: 0.005s, Total after receive time: 0.424s
+第 7 层完成，输出形状：torch.Size([1, 256, 56, 56])
+b'8' b'8' b'256*56*56'
+NameNode Pre send time: 0.012s, Total pre send time: 0.875s
+NameNode After receive time: 0.005s, Total after receive time: 0.429s
+第 8 层完成，输出形状：torch.Size([1, 256, 56, 56])
+池化层耗时：0.004s
+第 9 层完成，输出形状：torch.Size([1, 256, 28, 28])
+b'10' b'10' b'256*28*28'
+NameNode Pre send time: 0.012s, Total pre send time: 0.887s
+NameNode After receive time: 0.004s, Total after receive time: 0.433s
+第 10 层完成，输出形状：torch.Size([1, 512, 28, 28])
+b'11' b'11' b'512*28*28'
+NameNode Pre send time: 0.013s, Total pre send time: 0.900s
+NameNode After receive time: 0.003s, Total after receive time: 0.436s
+第 11 层完成，输出形状：torch.Size([1, 512, 28, 28])
+池化层耗时：0.003s
+第 12 层完成，输出形状：torch.Size([1, 512, 14, 14])
+b'13' b'13' b'512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.911s
+NameNode After receive time: 0.001s, Total after receive time: 0.437s
+第 13 层完成，输出形状：torch.Size([1, 512, 14, 14])
+b'14' b'14' b'512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.922s
+NameNode After receive time: 0.001s, Total after receive time: 0.438s
+第 14 层完成，输出形状：torch.Size([1, 512, 14, 14])
+池化层耗时：0.001s
+第 15 层完成，输出形状：torch.Size([1, 512, 7, 7])
+全连接层耗时：2.141s
+第 16 层完成，输出形状：torch.Size([1, 4096])
+全连接层耗时：0.348s
+第 17 层完成，输出形状：torch.Size([1, 4096])
+全连接层耗时：0.006s
+第 18 层完成，输出形状：torch.Size([1, 100])
+
+第 5 轮完成
+总耗时：6.996s | 总传输耗时：0.194s
+
+第 0 轮为有效结果, 输出时间
+Thread time: 4.427s, Thread counts: 10
+transfer_time:  0.002496004104614258
+transfer_time:  0.16547751426696777
+transfer_time:  0.0013966560363769531
+transfer_time:  0.008376359939575195
+transfer_time:  0.0048809051513671875
+transfer_time:  0.003922224044799805
+transfer_time:  0.0023956298828125
+transfer_time:  0.003438711166381836
+transfer_time:  0.0010390281677246094
+transfer_time:  0.0009791851043701172
+NameNode Transfer time: 0.194s, Transfer counts: 10
+NameNode 所有连接已关闭
+预热轮次：3 | 有效轮次：2

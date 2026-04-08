@@ -1,0 +1,165 @@
+========== 第 1 轮运行 ==========
+b'1' b'1' b'3*224*224'
+NameNode Pre send time: 0.015s, Total pre send time: 0.015s
+NameNode After receive time: 0.037s, Total after receive time: 0.037s
+第 1 层完成，输出形状：torch.Size([1, 64, 224, 224])
+b'2' b'2' b'64*224*224'
+NameNode Pre send time: 0.034s, Total pre send time: 0.049s
+NameNode After receive time: 0.033s, Total after receive time: 0.070s
+第 2 层完成，输出形状：torch.Size([1, 64, 224, 224])
+池化层耗时：0.069s
+第 3 层完成，输出形状：torch.Size([1, 64, 112, 112])
+b'4' b'4' b'64*112*112'
+NameNode Pre send time: 0.012s, Total pre send time: 0.061s
+NameNode After receive time: 0.013s, Total after receive time: 0.082s
+第 4 层完成，输出形状：torch.Size([1, 128, 112, 112])
+b'5' b'5' b'128*112*112'
+NameNode Pre send time: 0.012s, Total pre send time: 0.073s
+NameNode After receive time: 0.011s, Total after receive time: 0.093s
+第 5 层完成，输出形状：torch.Size([1, 128, 112, 112])
+池化层耗时：0.007s
+第 6 层完成，输出形状：torch.Size([1, 128, 56, 56])
+b'7' b'7' b'128*56*56'
+NameNode Pre send time: 0.011s, Total pre send time: 0.085s
+NameNode After receive time: 0.005s, Total after receive time: 0.098s
+第 7 层完成，输出形状：torch.Size([1, 256, 56, 56])
+b'8' b'8' b'256*56*56'
+NameNode Pre send time: 0.012s, Total pre send time: 0.096s
+NameNode After receive time: 0.005s, Total after receive time: 0.104s
+第 8 层完成，输出形状：torch.Size([1, 256, 56, 56])
+池化层耗时：0.003s
+第 9 层完成，输出形状：torch.Size([1, 256, 28, 28])
+b'10' b'10' b'256*28*28'
+NameNode Pre send time: 0.011s, Total pre send time: 0.107s
+NameNode After receive time: 0.003s, Total after receive time: 0.107s
+第 10 层完成，输出形状：torch.Size([1, 512, 28, 28])
+b'11' b'11' b'512*28*28'
+NameNode Pre send time: 0.011s, Total pre send time: 0.118s
+NameNode After receive time: 0.003s, Total after receive time: 0.109s
+第 11 层完成，输出形状：torch.Size([1, 512, 28, 28])
+池化层耗时：0.002s
+第 12 层完成，输出形状：torch.Size([1, 512, 14, 14])
+b'13' b'13' b'512*14*14'
+NameNode Pre send time: 0.012s, Total pre send time: 0.130s
+NameNode After receive time: 0.001s, Total after receive time: 0.110s
+第 13 层完成，输出形状：torch.Size([1, 512, 14, 14])
+b'14' b'14' b'512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.141s
+NameNode After receive time: 0.001s, Total after receive time: 0.111s
+第 14 层完成，输出形状：torch.Size([1, 512, 14, 14])
+池化层耗时：0.008s
+第 15 层完成，输出形状：torch.Size([1, 25088])
+全连接层耗时：0.917s
+第 16 层完成，输出形状：torch.Size([1, 25088])
+Traceback (most recent call last):
+  File "namenode_0_1_warm.py", line 120, in <module>
+    run_distributed_inference_keep_connection(namenode, i)
+  File "namenode_0_1_warm.py", line 65, in run_distributed_inference_keep_connection
+    final_output = inference_model(middle_output, layer_it, layer_it)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "../VGG/mydefine_VGG13.py", line 167, in forward
+    x = self.module_list[i](x)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/container.py", line 92, in forward
+    input = module(input)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/linear.py", line 87, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/functional.py", line 1370, in linear
+    ret = torch.addmm(bias, input, weight.t())
+RuntimeError: size mismatch, m1: [1 x 25088], m2: [4096 x 4096] at /pytorch/aten/src/TH/generic/THTensorMath.cpp:197
+ajie@ubuntu:~/project/EdgeLD/项目代码/EdgeMI/node_test$ cd clear
+-bash: cd: clear: No such file or directory
+ajie@ubuntu:~/project/EdgeLD/项目代码/EdgeMI/node_test$ clear
+ajie@ubuntu:~/project/EdgeLD/项目代码/EdgeMI/node_test$ python namenode_0_1_warm.py 
+Traceback (most recent call last):
+  File "namenode_0_1_warm.py", line 11, in <module>
+    from VGG.mydefine_VGG13 import VGG_model
+  File "../VGG/mydefine_VGG13.py", line 180
+    if start > end or start <= 0 or end > self.module_total_length:
+     ^
+IndentationError: expected an indented block
+ajie@ubuntu:~/project/EdgeLD/项目代码/EdgeMI/node_test$ clear
+ajie@ubuntu:~/project/EdgeLD/项目代码/EdgeMI/node_test$ python namenode_0_1_warm.py 
+NameNode 持久化启动，建立所有连接...
+NameNode 开始初始化
+Hello NameNode, I have received your hello world, I'm DateNode 0
+NameNode 初始化完成
+所有连接已建立，开始多轮推理...
+
+========== 第 1 轮运行 ==========
+b'1' b'1' b'3*224*224'
+NameNode Pre send time: 0.022s, Total pre send time: 0.022s
+NameNode After receive time: 0.049s, Total after receive time: 0.049s
+第 1 层完成，输出形状：torch.Size([1, 64, 224, 224])
+b'2' b'2' b'64*224*224'
+NameNode Pre send time: 0.042s, Total pre send time: 0.064s
+NameNode After receive time: 0.024s, Total after receive time: 0.073s
+第 2 层完成，输出形状：torch.Size([1, 64, 224, 224])
+池化层耗时：0.055s
+第 3 层完成，输出形状：torch.Size([1, 64, 112, 112])
+b'4' b'4' b'64*112*112'
+NameNode Pre send time: 0.016s, Total pre send time: 0.080s
+NameNode After receive time: 0.010s, Total after receive time: 0.083s
+第 4 层完成，输出形状：torch.Size([1, 128, 112, 112])
+b'5' b'5' b'128*112*112'
+NameNode Pre send time: 0.013s, Total pre send time: 0.093s
+NameNode After receive time: 0.010s, Total after receive time: 0.094s
+第 5 层完成，输出形状：torch.Size([1, 128, 112, 112])
+池化层耗时：0.006s
+第 6 层完成，输出形状：torch.Size([1, 128, 56, 56])
+b'7' b'7' b'128*56*56'
+NameNode Pre send time: 0.012s, Total pre send time: 0.104s
+NameNode After receive time: 0.005s, Total after receive time: 0.099s
+第 7 层完成，输出形状：torch.Size([1, 256, 56, 56])
+b'8' b'8' b'256*56*56'
+NameNode Pre send time: 0.012s, Total pre send time: 0.116s
+NameNode After receive time: 0.006s, Total after receive time: 0.105s
+第 8 层完成，输出形状：torch.Size([1, 256, 56, 56])
+池化层耗时：0.003s
+第 9 层完成，输出形状：torch.Size([1, 256, 28, 28])
+b'10' b'10' b'256*28*28'
+NameNode Pre send time: 0.011s, Total pre send time: 0.127s
+NameNode After receive time: 0.003s, Total after receive time: 0.108s
+第 10 层完成，输出形状：torch.Size([1, 512, 28, 28])
+b'11' b'11' b'512*28*28'
+NameNode Pre send time: 0.011s, Total pre send time: 0.138s
+NameNode After receive time: 0.003s, Total after receive time: 0.110s
+第 11 层完成，输出形状：torch.Size([1, 512, 28, 28])
+池化层耗时：0.002s
+第 12 层完成，输出形状：torch.Size([1, 512, 14, 14])
+b'13' b'13' b'512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.149s
+NameNode After receive time: 0.001s, Total after receive time: 0.111s
+第 13 层完成，输出形状：torch.Size([1, 512, 14, 14])
+b'14' b'14' b'512*14*14'
+NameNode Pre send time: 0.011s, Total pre send time: 0.160s
+NameNode After receive time: 0.001s, Total after receive time: 0.112s
+第 14 层完成，输出形状：torch.Size([1, 512, 14, 14])
+池化层耗时：0.001s
+第 15 层完成，输出形状：torch.Size([1, 512, 7, 7])
+全连接层耗时：0.993s
+第 16 层完成，输出形状：torch.Size([1, 512, 7, 7])
+Traceback (most recent call last):
+  File "namenode_0_1_warm.py", line 120, in <module>
+    run_distributed_inference_keep_connection(namenode, i)
+  File "namenode_0_1_warm.py", line 65, in run_distributed_inference_keep_connection
+    final_output = inference_model(middle_output, layer_it, layer_it)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "../VGG/mydefine_VGG13.py", line 197, in forward
+    x = self.module_list[i](x)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/container.py", line 92, in forward
+    input = module(input)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/module.py", line 541, in __call__
+    result = self.forward(*input, **kwargs)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/modules/linear.py", line 87, in forward
+    return F.linear(input, self.weight, self.bias)
+  File "/home/ajie/.pyenv/versions/3.6.9/lib/python3.6/site-packages/torch/nn/functional.py", line 1370, in linear
+    ret = torch.addmm(bias, input, weight.t())
+RuntimeError: size mismatch, m1: [1 x 25088], m2: [4096 x 4096] at /pytorch/aten/src/TH/generic/THTensorMath.cpp:197

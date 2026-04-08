@@ -8,7 +8,7 @@ import torch
 import threading
 import time
 import torch.nn as nn
-from VGG.mydefine_VGG16 import VGG_model
+from VGG.mydefine_VGG13 import VGG_model
 from VGG.tensor_op import tensor_divide, tensor_divide_and_fill, tensor_divide_by_computing_and_fill, \
     tensor_divide_by_computing_network_and_fill, tensor_divide_by_computing_and_network
 from VGG.tensor_op import merge_total_tensor, merge_part_tensor
@@ -80,67 +80,67 @@ thread_time = [[] for i in range(datanode_num)]
 if __name__ == "__main__":
 
 
-    # 11111111111111111111111111111111111111111111
-    # 此刻运行：（各设备等算力、全部计算数据交换）
-    # 进入到循环计算、通信中
-    time.sleep(3)
-    middle_output = input
-    # 循环按照神经网络的结构
-    start_time = time.time()
-    for layer_it in range(1, conv_length + 1, 1):
-        # 暂定全连接层， 池化层在namenode运行
-        if layer_it == conv_length: # 最后一层
-            linear_start_time = time.time()
-            final_output = inference_model(middle_output, layer_it, layer_it)
-            linear_end_time = time.time()
-            print('NameNode FullyConnected time: %0.3fs, start time: %0.3fs, end time: %0.3fs' % (linear_end_time - linear_start_time, linear_start_time, linear_end_time))
-        elif layer_it in maxpool_layer:
-            maxpool_start_time = time.time()
-            middle_output = inference_model(middle_output, layer_it, layer_it)
-            maxpool_end_time = time.time()
-            print('NameNode MaxPool time: %0.3fs, start time: %0.3fs, end time: %0.3fs' % (maxpool_end_time - maxpool_start_time, maxpool_start_time, maxpool_end_time))
-        else:
-            # 普通的卷积层有datanode共同运行，此刻运行：（各设备等算力、全部计算数据交换）
-            divided_tensor, divide_record = tensor_divide_by_computing_and_fill(middle_output,
-                                                                                datanode_num = datanode_num,
-                                                                                cross_layer = 1,
-                                                                                computing_power = computing_power)
-            # 设置线程将divided_tensor依次发送给各个datanode，并等待返回计算结果（），将计算值放入大矩阵之中暂存
-            # 难题：中间计算结果如何保存才能被主线程获取
-            for i in range(datanode_num):
-                # 创建线程发送，线程参数包括：datanode编号， 计算数据（start， end， send_tensor）, 返回
-                # print ("sned:", i)
-                # thread[i] = threading.Thread(target = send_total_data, args=(namenode, i, layer_it, layer_it, divided_tensor[i]))
-                thread[i] = threading.Thread(target = send_total_data, args=(i, divided_tensor[i], layer_it, layer_it, transfer_time))
+    # # 11111111111111111111111111111111111111111111
+    # # 此刻运行：（各设备等算力、全部计算数据交换）
+    # # 进入到循环计算、通信中
+    # time.sleep(3)
+    # middle_output = input
+    # # 循环按照神经网络的结构
+    # start_time = time.time()
+    # for layer_it in range(1, conv_length + 1, 1):
+    #     # 暂定全连接层， 池化层在namenode运行
+    #     if layer_it == conv_length: # 最后一层
+    #         linear_start_time = time.time()
+    #         final_output = inference_model(middle_output, layer_it, layer_it)
+    #         linear_end_time = time.time()
+    #         print('NameNode FullyConnected time: %0.3fs, start time: %0.3fs, end time: %0.3fs' % (linear_end_time - linear_start_time, linear_start_time, linear_end_time))
+    #     elif layer_it in maxpool_layer:
+    #         maxpool_start_time = time.time()
+    #         middle_output = inference_model(middle_output, layer_it, layer_it)
+    #         maxpool_end_time = time.time()
+    #         print('NameNode MaxPool time: %0.3fs, start time: %0.3fs, end time: %0.3fs' % (maxpool_end_time - maxpool_start_time, maxpool_start_time, maxpool_end_time))
+    #     else:
+    #         # 普通的卷积层有datanode共同运行，此刻运行：（各设备等算力、全部计算数据交换）
+    #         divided_tensor, divide_record = tensor_divide_by_computing_and_fill(middle_output,
+    #                                                                             datanode_num = datanode_num,
+    #                                                                             cross_layer = 1,
+    #                                                                             computing_power = computing_power)
+    #         # 设置线程将divided_tensor依次发送给各个datanode，并等待返回计算结果（），将计算值放入大矩阵之中暂存
+    #         # 难题：中间计算结果如何保存才能被主线程获取
+    #         for i in range(datanode_num):
+    #             # 创建线程发送，线程参数包括：datanode编号， 计算数据（start， end， send_tensor）, 返回
+    #             # print ("sned:", i)
+    #             # thread[i] = threading.Thread(target = send_total_data, args=(namenode, i, layer_it, layer_it, divided_tensor[i]))
+    #             thread[i] = threading.Thread(target = send_total_data, args=(i, divided_tensor[i], layer_it, layer_it, transfer_time))
 
-                thread_start_time[i] = time.time()
+    #             thread_start_time[i] = time.time()
 
-                thread[i].start()
-            # 等待所有线程完成
-            for i in range(datanode_num):
-                thread[i].join()
+    #             thread[i].start()
+    #         # 等待所有线程完成
+    #         for i in range(datanode_num):
+    #             thread[i].join()
 
-                thread_end_time[i] = time.time()
-                thread_time[i].append(thread_end_time[i] - thread_start_time[i])
+    #             thread_end_time[i] = time.time()
+    #             thread_time[i].append(thread_end_time[i] - thread_start_time[i])
 
-            # 整合之后的Tensor
-            merged_tensor = namenode.get_merged_total_tensor()
-            # 结束本layer的推理，继续推理下一个layer。构造一个新的输入
-            middle_output = merged_tensor
-        print ("middle_output: ", middle_output.size())
-        print ("结束 %d的推理" % layer_it)
-    end_time = time.time()
-    print("Used time: %0.3fs" % (end_time - start_time))
+    #         # 整合之后的Tensor
+    #         merged_tensor = namenode.get_merged_total_tensor()
+    #         # 结束本layer的推理，继续推理下一个layer。构造一个新的输入
+    #         middle_output = merged_tensor
+    #     print ("middle_output: ", middle_output.size())
+    #     print ("结束 %d的推理" % layer_it)
+    # end_time = time.time()
+    # print("Used time: %0.3fs" % (end_time - start_time))
 
-    for i in range(datanode_num): print('Thread time: %0.3fs, Thread counts: %d' % (sum(thread_time[i]), len(thread_time[i])))
+    # for i in range(datanode_num): print('Thread time: %0.3fs, Thread counts: %d' % (sum(thread_time[i]), len(thread_time[i])))
 
-    # for i in range(len(transfer_time)): print("transfer_time: ", transfer_time[i])
-    print('NameNode Transfer time: %0.3fs, Transfer counts: %d' % (sum(transfer_time), len(transfer_time)))
+    # # for i in range(len(transfer_time)): print("transfer_time: ", transfer_time[i])
+    # print('NameNode Transfer time: %0.3fs, Transfer counts: %d' % (sum(transfer_time), len(transfer_time)))
 
-    # 关闭连接
-    time.sleep(2)
-    namenode.close_all()
-    print("关闭 NameNode 所有 Socket 连接")
+    # # 关闭连接
+    # time.sleep(2)
+    # namenode.close_all()
+    # print("关闭 NameNode 所有 Socket 连接")
 
     # # 2222222222222222222222222222222222222222222222222222222222
     # # 此刻运行：（各设备算力描述不同、通信资源相同，单层、差异数据交换） 池化层再次全部交换
@@ -273,106 +273,106 @@ if __name__ == "__main__":
     # namenode.close_all()
     # print("关闭 NameNode 所有 Socket 连接")
 
-    # # 444444444444444444444444444444444444444444444444444444444444444444444444
-    # # 此刻运行：各设备算力描述不同、通信资源不同，多层、差异数据交换， 池化层再次全部交换
-    # time.sleep(1)
-    # middle_output = input
-    # # 将第一层加入，便于整体计算，以 maxpool_layer 为界限
-    # final_output = torch.rand(1, 100)
-    # start_time = time.time()
-    # if datanode_num != 1:
-    #     for layer_it in range(1, conv_length + 1, 1):
-    #         # “全连接层” 和 “池化层” 运行在 namenode，“全连接层”运行在datanode，全连接层的多机计算创新 暂时不做
-    #         if layer_it == conv_length:
-    #             # 已计算到卷积层最后一层，后续由 namenode 计算，“全连接层”计算 暂时不做
-    #             final_output = inference_model(middle_output, layer_it, total_length)
-    #             print("计算全连接层")
-    #         # 若为 池化层, namenode 直接计算，该部分如何修改？ #######################################################
-    #         elif layer_it in maxpool_layer:
-    #             # 该部分是卷积层运算
-    #             middle_output = inference_model(middle_output, layer_it, layer_it)
-    #             print("池化层输出数据大小：", middle_output.size())
-    #
-    #         # “第一层”或者“池化层” 后的一层，需要将整个特征图按照 datanode_num及其他条件 划分后的数据全部传输（该部分存在问题）
-    #         elif (layer_it == 1) or (layer_it - 1 in maxpool_layer):
-    #             # 此处的难点是：如何确定 start - end ，(start 与 end 写法没有问题)
-    #             start = layer_it
-    #             end = get_end_layer(start, maxpool_layer) - 1
-    #             cross_layer = end - start + 1
-    #             print("cross_layer: %d" % cross_layer)
-    #             # 此处更换 划分函数
-    #             # divided_tensor_list, divide_record = tensor_divide_by_computing_and_fill(middle_output,
-    #             #                                                                          datanode_num = datanode_num,
-    #             #                                                                          cross_layer = cross_layer,
-    #             #                                                                          computing_power = computing_power)
-    #             divided_tensor_list, divide_record = tensor_divide_by_computing_and_network(middle_output, datanode_num = datanode_num,
-    #                                                                                         cross_layer = cross_layer, computing_power = computing_power,
-    #                                                                                         computing_a = computing_a, computing_b = computing_b,
-    #                                                                                         network_state = network_state,c_out = c_out_list[layer_it])
-    #
-    #             for i in range(datanode_num):
-    #                 # 创建线程发送，线程参数包括：datanode编号， 计算数据（send_tensor, start，end）, 返回
-    #                 # print ("sned:", i)
-    #                 thread[i] = threading.Thread(target = send_total_data, args = (i, divided_tensor_list[i], start, end, transfer_time))
-    #                 thread[i].start()
-    #             # 等待所有线程完成
-    #             for i in range(datanode_num):
-    #                 thread[i].join()
-    #             # 部分数据 整合之后的Tensor，
-    #             temp = namenode.get_recv_tensor_list()
-    #             middle_output = namenode.get_merged_total_tensor(cross_layer = cross_layer)
-    #             print ("合并后的 middle_output：", middle_output.size())
-    #         # 非上述三种种方法，普通的“卷积层”计算，不要这种情况，直接终止本次计算
-    #         else:
-    #             print ("NameNode不参与第 %d 层计算" % layer_it)
-    #             continue
-    # else:
-    #     for layer_it in range(1, conv_length + 1, 1):
-    #         # “全连接层” 和 “池化层” 运行在 namenode，“全连接层”运行在datanode，全连接层的多机计算创新 暂时不做
-    #         if layer_it == conv_length:
-    #             # 已计算到卷积层最后一层，后续由 namenode 计算，“全连接层”计算 暂时不做
-    #             final_output = inference_model(middle_output, layer_it, total_length)
-    #             print("计算全连接层")
-    #         # 若为 池化层, namenode 直接计算，该部分如何修改？ #######################################################
-    #         elif layer_it in maxpool_layer:
-    #             # 该部分是卷积层运算
-    #             middle_output = inference_model(middle_output, layer_it, layer_it)
-    #             print("池化层输出数据大小：", middle_output.size())
-    #
-    #         # “第一层”或者“池化层” 后的一层，需要将整个特征图按照 datanode_num及其他条件 划分后的数据全部传输（该部分存在问题）
-    #         elif (layer_it == 1) or (layer_it - 1 in maxpool_layer):
-    #             # 此处的难点是：如何确定 start - end ，(start 与 end 写法没有问题)
-    #             start = layer_it
-    #             end = get_end_layer(start, maxpool_layer) - 1
-    #             cross_layer = end - start + 1
-    #             print("cross_layer: %d" % cross_layer)
-    #
-    #             for i in range(datanode_num):
-    #                 # 创建线程发送，线程参数包括：datanode编号， 计算数据（send_tensor, start，end）, 返回
-    #                 # print ("sned:", i)
-    #                 thread[i] = threading.Thread(target=send_total_data, args=(i, middle_output, start, end, transfer_time))
-    #                 thread[i].start()
-    #             # 等待所有线程完成
-    #             for i in range(datanode_num):
-    #                 thread[i].join()
-    #             # 部分数据 整合之后的Tensor
-    #             temp = namenode.get_recv_tensor_list()
-    #             middle_output = namenode.get_merged_total_tensor(cross_layer = cross_layer)
-    #             print ("合并后的 middle_output：", middle_output.size())
-    #         # 非上述三种种方法，普通的“卷积层”计算，不要这种情况，直接终止本次计算
-    #         else:
-    #             print ("NameNode不参与第 %d 层计算" % layer_it)
-    #             continue
-    #
-    # # 结束全部 “”和“”的计算
-    # print("NameNode 结束计算")
-    # print("Final Output: ", final_output.size())
-    # # 打印相关统计结果
-    # end_time = time.time()
-    # print("Used Time: %0.3fs" % (end_time - start_time))
-    # # 关闭连接
-    # time.sleep(2)
-    # namenode.close_all()
-    # print("关闭 NameNode 所有 Socket 连接")
+    # 444444444444444444444444444444444444444444444444444444444444444444444444
+    # 此刻运行：各设备算力描述不同、通信资源不同，多层、差异数据交换， 池化层再次全部交换
+    time.sleep(1)
+    middle_output = input
+    # 将第一层加入，便于整体计算，以 maxpool_layer 为界限
+    final_output = torch.rand(1, 100)
+    start_time = time.time()
+    if datanode_num != 1:
+        for layer_it in range(1, conv_length + 1, 1):
+            # “全连接层” 和 “池化层” 运行在 namenode，“全连接层”运行在datanode，全连接层的多机计算创新 暂时不做
+            if layer_it == conv_length:
+                # 已计算到卷积层最后一层，后续由 namenode 计算，“全连接层”计算 暂时不做
+                final_output = inference_model(middle_output, layer_it, total_length)
+                print("计算全连接层")
+            # 若为 池化层, namenode 直接计算，该部分如何修改？ #######################################################
+            elif layer_it in maxpool_layer:
+                # 该部分是卷积层运算
+                middle_output = inference_model(middle_output, layer_it, layer_it)
+                print("池化层输出数据大小：", middle_output.size())
+    
+            # “第一层”或者“池化层” 后的一层，需要将整个特征图按照 datanode_num及其他条件 划分后的数据全部传输（该部分存在问题）
+            elif (layer_it == 1) or (layer_it - 1 in maxpool_layer):
+                # 此处的难点是：如何确定 start - end ，(start 与 end 写法没有问题)
+                start = layer_it
+                end = get_end_layer(start, maxpool_layer) - 1
+                cross_layer = end - start + 1
+                print("cross_layer: %d" % cross_layer)
+                # 此处更换 划分函数
+                # divided_tensor_list, divide_record = tensor_divide_by_computing_and_fill(middle_output,
+                #                                                                          datanode_num = datanode_num,
+                #                                                                          cross_layer = cross_layer,
+                #                                                                          computing_power = computing_power)
+                divided_tensor_list, divide_record = tensor_divide_by_computing_and_network(middle_output, datanode_num = datanode_num,
+                                                                                            cross_layer = cross_layer, computing_power = computing_power,
+                                                                                            computing_a = computing_a, computing_b = computing_b,
+                                                                                            network_state = network_state,c_out = c_out_list[layer_it])
+    
+                for i in range(datanode_num):
+                    # 创建线程发送，线程参数包括：datanode编号， 计算数据（send_tensor, start，end）, 返回
+                    # print ("sned:", i)
+                    thread[i] = threading.Thread(target = send_total_data, args = (i, divided_tensor_list[i], start, end, transfer_time))
+                    thread[i].start()
+                # 等待所有线程完成
+                for i in range(datanode_num):
+                    thread[i].join()
+                # 部分数据 整合之后的Tensor，
+                temp = namenode.get_recv_tensor_list()
+                middle_output = namenode.get_merged_total_tensor(cross_layer = cross_layer)
+                print ("合并后的 middle_output：", middle_output.size())
+            # 非上述三种种方法，普通的“卷积层”计算，不要这种情况，直接终止本次计算
+            else:
+                print ("NameNode不参与第 %d 层计算" % layer_it)
+                continue
+    else:
+        for layer_it in range(1, conv_length + 1, 1):
+            # “全连接层” 和 “池化层” 运行在 namenode，“全连接层”运行在datanode，全连接层的多机计算创新 暂时不做
+            if layer_it == conv_length:
+                # 已计算到卷积层最后一层，后续由 namenode 计算，“全连接层”计算 暂时不做
+                final_output = inference_model(middle_output, layer_it, total_length)
+                print("计算全连接层")
+            # 若为 池化层, namenode 直接计算，该部分如何修改？ #######################################################
+            elif layer_it in maxpool_layer:
+                # 该部分是卷积层运算
+                middle_output = inference_model(middle_output, layer_it, layer_it)
+                print("池化层输出数据大小：", middle_output.size())
+    
+            # “第一层”或者“池化层” 后的一层，需要将整个特征图按照 datanode_num及其他条件 划分后的数据全部传输（该部分存在问题）
+            elif (layer_it == 1) or (layer_it - 1 in maxpool_layer):
+                # 此处的难点是：如何确定 start - end ，(start 与 end 写法没有问题)
+                start = layer_it
+                end = get_end_layer(start, maxpool_layer) - 1
+                cross_layer = end - start + 1
+                print("cross_layer: %d" % cross_layer)
+    
+                for i in range(datanode_num):
+                    # 创建线程发送，线程参数包括：datanode编号， 计算数据（send_tensor, start，end）, 返回
+                    # print ("sned:", i)
+                    thread[i] = threading.Thread(target=send_total_data, args=(i, middle_output, start, end, transfer_time))
+                    thread[i].start()
+                # 等待所有线程完成
+                for i in range(datanode_num):
+                    thread[i].join()
+                # 部分数据 整合之后的Tensor
+                temp = namenode.get_recv_tensor_list()
+                middle_output = namenode.get_merged_total_tensor(cross_layer = cross_layer)
+                print ("合并后的 middle_output：", middle_output.size())
+            # 非上述三种种方法，普通的“卷积层”计算，不要这种情况，直接终止本次计算
+            else:
+                print ("NameNode不参与第 %d 层计算" % layer_it)
+                continue
+    
+    # 结束全部 “”和“”的计算
+    print("NameNode 结束计算")
+    print("Final Output: ", final_output.size())
+    # 打印相关统计结果
+    end_time = time.time()
+    print("Used Time: %0.3fs" % (end_time - start_time))
+    # 关闭连接
+    time.sleep(2)
+    namenode.close_all()
+    print("关闭 NameNode 所有 Socket 连接")
 
 
