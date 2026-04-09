@@ -14,7 +14,7 @@ import threading
 num_set_up = Num_set_up()
 namenode_num = num_set_up.get_namenode_num()
 datanode_num = num_set_up.get_datanode_num()
-datanode_name = 0
+datanode_name = 5
 cross_layer = 1
 
 # 加载、初始化模型
@@ -31,7 +31,7 @@ TOTAL_ROUNDS = WARM_UP_ROUNDS + VALID_ROUNDS
 
 def datanode_persistent_pooled():
     """持久化运行的 DataNode（池化层由DataNode计算版），处理多轮推理请求（env4场景）"""
-    print(f"\n===== DataNode 0 持久化启动（场景4-池化层计算版） =====")
+    print(f"\n===== DataNode {datanode_name} 持久化启动（场景4-池化层计算版） =====")
 
     # 只初始化一次，保持连接
     datanode = Network_init_datanode(
@@ -48,7 +48,7 @@ def datanode_persistent_pooled():
         pre_conv = []
         transfer_time = []
 
-        print(f"\n----- DataNode 0 第 {round_idx} 轮推理开始 -----")
+        print(f"\n----- DataNode {datanode_name} 第 {round_idx} 轮推理开始 -----")
 
         try:
             while True:
@@ -82,12 +82,12 @@ def datanode_persistent_pooled():
             if round_idx > WARM_UP_ROUNDS:
                 for i in range(len(pre_conv)):
                     print("pre_conv: ", pre_conv[i])
-                print('DataNode_0 Pre_conv time: %0.3fs, Pre_conv counts: %d' % (sum(pre_conv), len(pre_conv)))
+                print(f'DataNode_{datanode_name} Pre_conv time: %0.3fs, Pre_conv counts: %d' % (sum(pre_conv), len(pre_conv)))
 
                 for i in range(len(transfer_time)):
                     print("transfer_time: ", transfer_time[i])
                 print(
-                    'DataNode_0 Transfer time: %0.3fs, Transfer counts: %d' % (sum(transfer_time), len(transfer_time)))
+                    f'DataNode_{datanode_name} Transfer time: %0.3fs, Transfer counts: %d' % (sum(transfer_time), len(transfer_time)))
 
         except (BrokenPipeError, ConnectionResetError):
             print(f"第 {round_idx} 轮：连接被 NameNode 关闭，等待新连接...")
@@ -108,7 +108,7 @@ def datanode_persistent_pooled():
     # 关闭连接
     datanode.close()
     print(f"关闭 DataNode {datanode_name} 的Socket连接")
-    print("DataNode 持久化连接已关闭")
+    print(f"DataNode{datanode_name} 持久化连接已关闭")
 
 
 if __name__ == "__main__":

@@ -232,6 +232,248 @@ def tensor_divide_by_computing_and_network(original_tensor, datanode_num = 1, cr
     # 返回最终的结果
     return divided_tensor, divide_record
 
+# #############################################################################################################
+# 根据计算能力划分区域, original_tensor默认为4维，划分后的[start, end],含start，不包含end
+def tensor_divide_by_computing_and_network_pooled(original_tensor, datanode_num=1, cross_layer=1,
+                                           computing_power=[], computing_a=[], computing_b=[], network_state=[],
+                                           c_out=0):
+    # 优化步长
+    step = 1
+    divided_tensor = []
+    divide_record = np.zeros((datanode_num, 2), dtype=np.int)
+    input_param = []
+    if datanode_num == 1:
+        return original_tensor, divide_record
+    else:
+        input_number, c_in, height, width = original_tensor.size()
+        input_param.append(input_number)
+        input_param.append(c_in)
+        input_param.append(height)
+        input_param.append(width)
+        # 提前计算求和
+        total_computing_power = 0
+        for i in range(datanode_num):
+            total_computing_power += computing_power[i]
+        sum_computing_power = []
+        for i in range(datanode_num + 1):
+            sum_computing_power.append(sum(computing_power[0: i]))
+
+        # 定义划分长度
+        length = []
+        # 时间开销
+        prediction_time = []
+        for i in range(datanode_num):
+            length.append(0)
+            prediction_time.append(0)
+        for it in range(datanode_num):
+            length[it] = int(sum_computing_power[it + 1] / total_computing_power * width) - \
+                         int(sum_computing_power[it] / total_computing_power * width)
+        for it in range(datanode_num):
+            prediction_time[it] = get_prediction_time(datanode_num=datanode_num, index=it, length=length[it],
+                                                      cross_layer=cross_layer, computing_a=computing_a,
+                                                      computing_b=computing_b, network_state=network_state,
+                                                      input_param=input_param, c_out=c_out)
+        iter = 0
+        iter_stop = 30
+        diff = 0
+        # 判断退出条件,1、max与min差值小于10ms，或者差值变化很小，或者某一个i对应的长度接近 1
+        while (True):
+            iter += 1
+            # 判断是否到轮次上限
+            if iter == iter_stop:
+                break
+            # 找出时间最值及下标
+            max_value = max(prediction_time)
+            min_value = min(prediction_time)
+            index_max = prediction_time.index(max_value)
+            index_min = prediction_time.index(min_value)
+            last_diff = diff
+            diff = max_value - min_value
+            # 判断退出条件
+            if (diff < 0.02 or min(length) <= 1):
+                break
+            last_diff = diff
+            length[index_max] -= step
+            length[index_min] += step
+            # 出错
+            prediction_time[index_max] = get_prediction_time(datanode_num=datanode_num, index=index_max,
+                                                             length=length[index_max], cross_layer=1,
+                                                             computing_a=computing_a,
+                                                             computing_b=computing_b, network_state=network_state,
+                                                             input_param=input_param, c_out=c_out)
+            prediction_time[index_min] = get_prediction_time(datanode_num=datanode_num, index=index_min,
+                                                             length=length[index_min], cross_layer=1,
+                                                             computing_a=computing_a,
+                                                             computing_b=computing_b, network_state=network_state,
+                                                             input_param=input_param, c_out=c_out)
+        #     print (length)
+        #     print (prediction_time)
+        # print(length)
+        # print(prediction_time)
+
+        # ===================== 新增优化：保证每个切分width为偶数 =====================
+        # 调整length数组，确保每个元素都是偶数，且总和不变
+        total_length = sum(length)
+        # 遍历调整每个长度为偶数
+        for i in range(datanode_num):
+            if length[i] % 2 != 0:
+                length[i] -= 1  # 奇数减1变为偶数，保证最小幅度调整
+        # 补偿因减1损失的长度，保证总宽度不变（偶数补偿，不破坏偶数性）
+        compensate = total_length - sum(length)
+        idx = 0
+        while compensate > 0:
+            length[idx] += 2
+            compensate -= 2
+            idx = (idx + 1) % datanode_num
+        # ==========================================================================
+
+        # 已经得到length，根据length确定划分范围
+        start = 0
+        end = 0
+        for it in range(datanode_num):
+            end = start + length[it]
+            # print("[ %d, %d]" % (start, end))
+            divide_record[it][0] = start
+            divide_record[it][1] = end
+            # 判断划分的位置
+            temp_tensor = 0
+            if it == 0:
+                # 最左边划分
+                temp_tensor = original_tensor[:, :, :, start: int(end + cross_layer)]
+            elif it == datanode_num - 1:
+                # 最右边划分
+                temp_tensor = original_tensor[:, :, :, int(start - cross_layer): end]
+            else:
+                # 中间非边界情况
+                temp_tensor = original_tensor[:, :, :, int(start - cross_layer): int(end + cross_layer)]
+            # 放入list
+            divided_tensor.append(temp_tensor)
+            # 更换起始位置。
+            start = end
+    # 返回最终的结果
+    return divided_tensor, divide_record
+
+# #############################################################################################################
+# 根据计算能力划分区域, original_tensor默认为4维，划分后的[start, end],含start，不包含end
+def tensor_divide_by_computing_and_network_pabc(original_tensor, datanode_num=1, cross_layer=1,
+                                           computing_power=[], computing_a=[], computing_b=[], network_state=[],
+                                           c_out=0):
+    # 优化步长
+    step = 1
+    divided_tensor = []
+    divide_record = np.zeros((datanode_num, 2), dtype=np.int)
+    input_param = []
+    if datanode_num == 1:
+        return original_tensor, divide_record
+    else:
+        input_number, c_in, height, width = original_tensor.size()
+        input_param.append(input_number)
+        input_param.append(c_in)
+        input_param.append(height)
+        input_param.append(width)
+        # 提前计算求和
+        total_computing_power = 0
+        for i in range(datanode_num):
+            total_computing_power += computing_power[i]
+        sum_computing_power = []
+        for i in range(datanode_num + 1):
+            sum_computing_power.append(sum(computing_power[0: i]))
+
+        # 定义划分长度
+        length = []
+        # 时间开销
+        prediction_time = []
+        for i in range(datanode_num):
+            length.append(0)
+            prediction_time.append(0)
+        for it in range(datanode_num):
+            length[it] = int(sum_computing_power[it + 1] / total_computing_power * width) - \
+                         int(sum_computing_power[it] / total_computing_power * width)
+        for it in range(datanode_num):
+            prediction_time[it] = get_prediction_time(datanode_num=datanode_num, index=it, length=length[it],
+                                                      cross_layer=cross_layer, computing_a=computing_a,
+                                                      computing_b=computing_b, network_state=network_state,
+                                                      input_param=input_param, c_out=c_out)
+        iter = 0
+        iter_stop = 30
+        diff = 0
+        # 判断退出条件,1、max与min差值小于10ms，或者差值变化很小，或者某一个i对应的长度接近 1
+        while (True):
+            iter += 1
+            # 判断是否到轮次上限
+            if iter == iter_stop:
+                break
+            # 找出时间最值及下标
+            max_value = max(prediction_time)
+            min_value = min(prediction_time)
+            index_max = prediction_time.index(max_value)
+            index_min = prediction_time.index(min_value)
+            last_diff = diff
+            diff = max_value - min_value
+            # 判断退出条件
+            if (diff < 0.02 or min(length) <= 1):
+                break
+            last_diff = diff
+            length[index_max] -= step
+            length[index_min] += step
+            # 出错
+            prediction_time[index_max] = get_prediction_time(datanode_num=datanode_num, index=index_max,
+                                                             length=length[index_max], cross_layer=1,
+                                                             computing_a=computing_a,
+                                                             computing_b=computing_b, network_state=network_state,
+                                                             input_param=input_param, c_out=c_out)
+            prediction_time[index_min] = get_prediction_time(datanode_num=datanode_num, index=index_min,
+                                                             length=length[index_min], cross_layer=1,
+                                                             computing_a=computing_a,
+                                                             computing_b=computing_b, network_state=network_state,
+                                                             input_param=input_param, c_out=c_out)
+        #     print (length)
+        #     print (prediction_time)
+        # print(length)
+        # print(prediction_time)
+
+        # ===================== 优化：保证每个切分 width 为 4 的倍数 =====================
+        total_length = sum(length)
+        # 第一步：把每个长度向下取为 4 的倍数
+        for i in range(datanode_num):
+            length[i] = (length[i] // 4) * 4  # 向下取 4 的倍数
+
+        # 第二步：补偿总长度，保证总和不变，且每个块仍然是 4 的倍数
+        compensate = total_length - sum(length)
+        idx = 0
+        while compensate > 0:
+            length[idx] += 4  # 每次 +4，保持是 4 的倍数
+            compensate -= 4
+            idx = (idx + 1) % datanode_num
+        # ==========================================================================
+
+        # 已经得到length，根据length确定划分范围
+        start = 0
+        end = 0
+        divide_layer = cross_layer + 2
+        for it in range(datanode_num):
+            end = start + length[it]
+            # print("[ %d, %d]" % (start, end))
+            divide_record[it][0] = start
+            divide_record[it][1] = end
+            # 判断划分的位置
+            temp_tensor = 0
+            if it == 0:
+                # 最左边划分
+                temp_tensor = original_tensor[:, :, :, start: int(end + divide_layer)]
+            elif it == datanode_num - 1:
+                # 最右边划分
+                temp_tensor = original_tensor[:, :, :, int(start - divide_layer): end]
+            else:
+                # 中间非边界情况
+                temp_tensor = original_tensor[:, :, :, int(start - divide_layer): int(end + divide_layer)]
+            # 放入list
+            divided_tensor.append(temp_tensor)
+            # 更换起始位置。
+            start = end
+    # 返回最终的结果
+    return divided_tensor, divide_record
+
 # 定义一个推理后的tensor，拆除无关部分
 def merge_total_tensor(divided_tensor = [], divide_record = [], cross_layer = 1):
     '''
@@ -255,6 +497,50 @@ def merge_total_tensor(divided_tensor = [], divide_record = [], cross_layer = 1)
         else:
             # 中间非边界
             merged_tensor = torch.cat((merged_tensor, divided_tensor[it][:, :, :, cross_layer: -cross_layer]), 3)
+    return merged_tensor
+
+# 定义一个推理后的tensor，拆除无关部分
+def merge_total_tensor_pooled(divided_tensor = [], divide_record = [], cross_layer = 1):
+    '''
+    :param divided_tensor: 需要合并的tensor
+    :param divide_record:  之前拆分位置的记录
+    :return: 合并后的tensor
+    '''
+    length = len(divided_tensor)
+    if length == 0:
+        return 0
+    if length == 1:
+        return divided_tensor[0][:, :, :, :]
+    merged_tensor = 0
+    # ===================== 新增优化：切分合并保证大小 ============================
+    divide_layer = cross_layer - 1
+    # ===========================================================================
+    for it in range(length):
+        if it == 0:
+            # 最左侧
+            merged_tensor = divided_tensor[it][:, :, :, 0:-divide_layer]
+        elif it == length -1:
+            # 最右侧
+            merged_tensor = torch.cat((merged_tensor, divided_tensor[it][:, :, :, divide_layer:]), 3)
+        else:
+            # 中间非边界
+            merged_tensor = torch.cat((merged_tensor, divided_tensor[it][:, :, :, divide_layer: -divide_layer]), 3)
+    return merged_tensor
+
+# 定义一个推理后的tensor，拆除无关部分
+def merge_total_tensor_pabc(divided_tensor=[], divide_record=[], cross_layer=1):
+    '''
+    单纯拼接 divided_tensor 中的所有张量，在第4维（dim=3）合并
+    :param divided_tensor: 需要合并的 tensor 列表
+    :param divide_record:  无用参数（保留兼容）
+    :return: 拼接后的完整 tensor
+    '''
+    length = len(divided_tensor)
+    if length == 0:
+        return 0
+
+    # 直接在 dim=3 拼接所有张量，不做任何裁剪/切片
+    merged_tensor = torch.cat(divided_tensor, dim=3)
     return merged_tensor
 
 # 聚合 差分传输 的tensor，暂时不需要写

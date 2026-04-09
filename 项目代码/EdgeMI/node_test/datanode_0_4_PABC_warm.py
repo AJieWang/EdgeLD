@@ -3,8 +3,8 @@ sys.path.append("../..")
 sys.path.append("..")
 
 from node_test.network_op import Network_init_datanode, Network_init_namenode
-from node_test.num_set_up import Num_set_up, VGG_model, COMPUTE_CONV_BLOCKS
-# from VGG.mydefine_VGG13 import VGG_model, COMPUTE_CONV_BLOCKS
+from node_test.num_set_up import Num_set_up, VGG_model, COMPUTE_CONV_BLOCKS_PABC, COMPUTE_PARTIAL_BLOCKS, COMPUTE_BLOCK_1_6
+# from VGG.mydefine_VGG16 import VGG_model, COMPUTE_CONV_BLOCKS_PABC, COMPUTE_PARTIAL_BLOCKS, COMPUTE_BLOCK_1_6
 from VGG.tensor_op import divied_middle_output
 import torch.nn as nn
 import torch, time
@@ -29,9 +29,15 @@ WARM_UP_ROUNDS = 3
 VALID_ROUNDS = 2
 TOTAL_ROUNDS = WARM_UP_ROUNDS + VALID_ROUNDS
 
+
+def is_partial_block(start):
+    """判断是否为PABC模式的层1-6完整块"""
+    return start in COMPUTE_PARTIAL_BLOCKS
+
+
 def datanode_persistent_pooled():
-    """持久化运行的 DataNode（池化层由DataNode计算版），处理多轮推理请求（env4场景）"""
-    print(f"\n===== DataNode 0 持久化启动（场景4-池化层计算版） =====")
+    """持久化运行的 DataNode（PABC模式），处理多轮推理请求"""
+    print(f"\n===== DataNode 0 持久化启动（PABC模式-层1-6完整块） =====")
 
     # 只初始化一次，保持连接
     datanode = Network_init_datanode(
@@ -61,13 +67,40 @@ def datanode_persistent_pooled():
                 conv_start = time.time()
 
                 block_end = 0
-                if start in COMPUTE_CONV_BLOCKS:
-                    block_end = COMPUTE_CONV_BLOCKS[start]
-                    print(f"计算卷积块: 层 {start} - {block_end} (包含池化层)")
+                
+                # PABC模式：判断是否为层1-6的完整块
+                if is_partial_block(start):
+                    # PABC模式：计算层1-6完整块(卷积+池化)
+                    block_end = COMPUTE_BLOCK_1_6[start] - 1
+                    print(f"PABC模式第一步-完整块: 层 {start} - {block_end} (包含池化层3)")
                     middle_output = inference_model(recv_tensor, start, block_end)
                     print("计算完成 middle_output:", middle_output.size())
+                    print("第六层池化前分割")
+                    divide_layer = 3
+                    if datanode_name == 0:
+                        # 最左侧
+                        middle_output = middle_output[:, :, :, 0:-divide_layer]
+                    elif datanode_name == datanode_num - 1:
+                        # 最右侧
+                        middle_output = middle_output[:, :, :, divide_layer:]
+                    else:
+                        # 中间非边界
+                        middle_output = middle_output[:, :, :, divide_layer: -divide_layer]
+                    print("分割后张量大小:", middle_output.size())
+                    print(f"PABC模式第二步-第六层池化: 层 {block_end + 1} - {block_end + 1} (池化层6)")
+                    middle_output = inference_model(middle_output, block_end + 1, block_end + 1)
+                    print("计算完成 middle_output:", middle_output.size())
                     datanode.datanode_send_data(middle_output, transfer_time, start, block_end)
-                    print(f"发送第 {block_end} 层的结果 (包含池化)")
+                    print(f"发送第 {block_end + 1} 层的结果 (包含池化层3和6)")
+                else:
+                    # 原有pooled模式：只计算卷积层
+                    if start in COMPUTE_CONV_BLOCKS_PABC:
+                        block_end = COMPUTE_CONV_BLOCKS_PABC[start]
+                        print(f"处理卷积块: 层 {start} - {block_end}")
+                        middle_output = inference_model(recv_tensor, start, block_end)
+                        print("计算完成 middle_output:", middle_output.size())
+                        datanode.datanode_send_data(middle_output, transfer_time, start, block_end)
+                        print(f"发送第 {block_end} 层的结果")
 
                 # 推理计时结束
                 conv_end = time.time()

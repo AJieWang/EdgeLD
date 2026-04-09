@@ -1,0 +1,149 @@
+========== 第 4 轮运行 (Env4) ==========
+计算第 1 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.011s, Total pre send time: 0.202s
+NameNode After receive time: 0.022s, Total after receive time: 0.197s
+合并后的 middle_output： torch.Size([1, 64, 224, 224])
+计算第 2 层
+NameNode不参与第 2 层计算
+计算第 3 层
+池化层耗时：0.015s
+池化层输出数据大小： torch.Size([1, 64, 112, 112])
+计算第 4 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.012s, Total pre send time: 0.214s
+NameNode After receive time: 0.011s, Total after receive time: 0.207s
+合并后的 middle_output： torch.Size([1, 128, 112, 112])
+计算第 5 层
+NameNode不参与第 5 层计算
+计算第 6 层
+池化层耗时：0.006s
+池化层输出数据大小： torch.Size([1, 128, 56, 56])
+计算第 7 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.011s, Total pre send time: 0.224s
+NameNode After receive time: 0.007s, Total after receive time: 0.214s
+合并后的 middle_output： torch.Size([1, 256, 56, 56])
+计算第 8 层
+NameNode不参与第 8 层计算
+计算第 9 层
+池化层耗时：0.003s
+池化层输出数据大小： torch.Size([1, 256, 28, 28])
+计算第 10 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.011s, Total pre send time: 0.236s
+NameNode After receive time: 0.003s, Total after receive time: 0.217s
+合并后的 middle_output： torch.Size([1, 512, 28, 28])
+计算第 11 层
+NameNode不参与第 11 层计算
+计算第 12 层
+池化层耗时：0.002s
+池化层输出数据大小： torch.Size([1, 512, 14, 14])
+计算第 13 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.011s, Total pre send time: 0.246s
+NameNode After receive time: 0.001s, Total after receive time: 0.217s
+合并后的 middle_output： torch.Size([1, 512, 14, 14])
+计算第 14 层
+NameNode不参与第 14 层计算
+计算第 15 层
+池化层耗时：0.000s
+池化层输出数据大小： torch.Size([1, 512, 7, 7])
+计算第 16 层
+全连接层耗时：0.016s
+全连接层输出数据大小： torch.Size([1, 4096])
+计算第 17 层
+全连接层耗时：0.003s
+全连接层输出数据大小： torch.Size([1, 4096])
+计算第 18 层
+全连接层耗时：0.000s
+全连接层输出数据大小： torch.Size([1, 100])
+
+第 4 轮完成 (Env4)
+本轮总耗时：1.511s | 本轮总传输耗时：0.014s
+
+第 0 轮为有效结果, 输出时间
+Thread time: 1.457s, Thread counts: 5
+transfer_time:  0.0005900859832763672
+transfer_time:  0.00621342658996582
+transfer_time:  0.0037355422973632812
+transfer_time:  0.0023288726806640625
+transfer_time:  0.0010936260223388672
+NameNode Transfer time: 0.014s, Transfer counts: 5
+
+========== 第 5 轮运行 (Env4) ==========
+计算第 1 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.011s, Total pre send time: 0.257s
+NameNode After receive time: 0.021s, Total after receive time: 0.238s
+合并后的 middle_output： torch.Size([1, 64, 224, 224])
+计算第 2 层
+NameNode不参与第 2 层计算
+计算第 3 层
+池化层耗时：0.012s
+池化层输出数据大小： torch.Size([1, 64, 112, 112])
+计算第 4 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.012s, Total pre send time: 0.270s
+NameNode After receive time: 0.011s, Total after receive time: 0.249s
+合并后的 middle_output： torch.Size([1, 128, 112, 112])
+计算第 5 层
+NameNode不参与第 5 层计算
+计算第 6 层
+池化层耗时：0.005s
+池化层输出数据大小： torch.Size([1, 128, 56, 56])
+计算第 7 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.011s, Total pre send time: 0.280s
+NameNode After receive time: 0.007s, Total after receive time: 0.256s
+合并后的 middle_output： torch.Size([1, 256, 56, 56])
+计算第 8 层
+NameNode不参与第 8 层计算
+计算第 9 层
+池化层耗时：0.003s
+池化层输出数据大小： torch.Size([1, 256, 28, 28])
+计算第 10 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.012s, Total pre send time: 0.292s
+NameNode After receive time: 0.004s, Total after receive time: 0.260s
+合并后的 middle_output： torch.Size([1, 512, 28, 28])
+计算第 11 层
+NameNode不参与第 11 层计算
+计算第 12 层
+池化层耗时：0.001s
+池化层输出数据大小： torch.Size([1, 512, 14, 14])
+计算第 13 层
+第一层/池化层后一层，跨层数：2
+NameNode Pre send time: 0.010s, Total pre send time: 0.302s
+NameNode After receive time: 0.001s, Total after receive time: 0.261s
+合并后的 middle_output： torch.Size([1, 512, 14, 14])
+计算第 14 层
+NameNode不参与第 14 层计算
+计算第 15 层
+池化层耗时：0.000s
+池化层输出数据大小： torch.Size([1, 512, 7, 7])
+计算第 16 层
+全连接层耗时：0.019s
+全连接层输出数据大小： torch.Size([1, 4096])
+计算第 17 层
+全连接层耗时：0.005s
+全连接层输出数据大小： torch.Size([1, 4096])
+计算第 18 层
+全连接层耗时：0.000s
+全连接层输出数据大小： torch.Size([1, 100])
+
+第 5 轮完成 (Env4)
+本轮总耗时：1.473s | 本轮总传输耗时：0.013s
+
+第 0 轮为有效结果, 输出时间
+Thread time: 1.418s, Thread counts: 5
+transfer_time:  0.0006103515625
+transfer_time:  0.00699305534362793
+transfer_time:  0.0031099319458007812
+transfer_time:  0.0009484291076660156
+transfer_time:  0.0009560585021972656
+NameNode Transfer time: 0.013s, Transfer counts: 5
+
+========== 所有轮次完成 ==========
+预热轮次：3 | 有效轮次：2
+关闭 NameNode 所有 Socket 连接

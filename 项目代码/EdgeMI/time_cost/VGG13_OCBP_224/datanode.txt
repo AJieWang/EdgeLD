@@ -1,0 +1,141 @@
+----- DataNode 0 第 4 轮推理开始 -----
+DataNode recv data length:  602137
+DataNode recv data length:  602137
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 3, 224, 224])
+要求计算 1 - 2 
+datanode.get_last_inference_layer() :  0
+计算第 1 层的 middle_output: torch.Size([1, 64, 224, 224])
+DataNode Pre send time: 0.016s, Total pre send time: 0.257s
+发送第 2 层的 send_tensor: torch.Size([1, 64, 224, 224])
+卷积层1-2 耗时：0.165s
+完成 1 - 2 的推理任务，并返回计算结果
+
+DataNode recv data length:  3211290
+DataNode recv data length:  3211290
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 64, 112, 112])
+要求计算 4 - 5 
+datanode.get_last_inference_layer() :  2
+计算第 4 层的 middle_output: torch.Size([1, 128, 112, 112])
+DataNode Pre send time: 0.012s, Total pre send time: 0.268s
+发送第 5 层的 send_tensor: torch.Size([1, 128, 112, 112])
+卷积层4-5 耗时：0.080s
+完成 4 - 5 的推理任务，并返回计算结果
+
+DataNode recv data length:  1605657
+DataNode recv data length:  1605657
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 128, 56, 56])
+要求计算 7 - 8 
+datanode.get_last_inference_layer() :  5
+计算第 7 层的 middle_output: torch.Size([1, 256, 56, 56])
+DataNode Pre send time: 0.012s, Total pre send time: 0.280s
+发送第 8 层的 send_tensor: torch.Size([1, 256, 56, 56])
+卷积层7-8 耗时：0.078s
+完成 7 - 8 的推理任务，并返回计算结果
+
+DataNode recv data length:  802843
+DataNode recv data length:  802843
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 256, 28, 28])
+要求计算 10 - 11 
+datanode.get_last_inference_layer() :  8
+计算第 10 层的 middle_output: torch.Size([1, 512, 28, 28])
+DataNode Pre send time: 0.011s, Total pre send time: 0.291s
+发送第 11 层的 send_tensor: torch.Size([1, 512, 28, 28])
+卷积层10-11 耗时：0.072s
+完成 10 - 11 的推理任务，并返回计算结果
+
+DataNode recv data length:  401435
+DataNode recv data length:  401435
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 512, 14, 14])
+要求计算 13 - 14 
+datanode.get_last_inference_layer() :  11
+计算第 13 层的 middle_output: torch.Size([1, 512, 14, 14])
+DataNode Pre send time: 0.012s, Total pre send time: 0.303s
+发送第 14 层的 send_tensor: torch.Size([1, 512, 14, 14])
+卷积层13-14 耗时：0.034s
+完成 13 - 14 的推理任务，并返回计算结果
+
+第 4 轮推理完成
+pre_conv:  0.016703367233276367
+pre_conv:  0.03613018989562988
+pre_conv:  0.020883798599243164
+pre_conv:  0.01562356948852539
+pre_conv:  0.012670278549194336
+DataNode_0 Pre_conv time: 0.102s, Pre_conv counts: 5
+transfer_time:  0.08188176155090332
+transfer_time:  0.008230924606323242
+transfer_time:  0.005105018615722656
+transfer_time:  0.0031332969665527344
+transfer_time:  0.001234292984008789
+DataNode_0 Transfer time: 0.100s, Transfer counts: 5
+
+----- DataNode 0 第 5 轮推理开始 -----
+DataNode recv data length:  602137
+DataNode recv data length:  602137
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 3, 224, 224])
+要求计算 1 - 2 
+datanode.get_last_inference_layer() :  0
+计算第 1 层的 middle_output: torch.Size([1, 64, 224, 224])
+DataNode Pre send time: 0.017s, Total pre send time: 0.320s
+发送第 2 层的 send_tensor: torch.Size([1, 64, 224, 224])
+卷积层1-2 耗时：0.167s
+完成 1 - 2 的推理任务，并返回计算结果
+
+DataNode recv data length:  3211290
+DataNode recv data length:  3211290
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 64, 112, 112])
+要求计算 4 - 5 
+datanode.get_last_inference_layer() :  2
+计算第 4 层的 middle_output: torch.Size([1, 128, 112, 112])
+DataNode Pre send time: 0.012s, Total pre send time: 0.332s
+发送第 5 层的 send_tensor: torch.Size([1, 128, 112, 112])
+卷积层4-5 耗时：0.079s
+完成 4 - 5 的推理任务，并返回计算结果
+
+DataNode recv data length:  1605657
+DataNode recv data length:  1605657
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 128, 56, 56])
+要求计算 7 - 8 
+datanode.get_last_inference_layer() :  5
+计算第 7 层的 middle_output: torch.Size([1, 256, 56, 56])
+DataNode Pre send time: 0.011s, Total pre send time: 0.343s
+发送第 8 层的 send_tensor: torch.Size([1, 256, 56, 56])
+卷积层7-8 耗时：0.077s
+完成 7 - 8 的推理任务，并返回计算结果
+
+DataNode recv data length:  802843
+DataNode recv data length:  802843
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 256, 28, 28])
+要求计算 10 - 11 
+datanode.get_last_inference_layer() :  8
+计算第 10 层的 middle_output: torch.Size([1, 512, 28, 28])
+DataNode Pre send time: 0.011s, Total pre send time: 0.353s
+发送第 11 层的 send_tensor: torch.Size([1, 512, 28, 28])
+卷积层10-11 耗时：0.073s
+完成 10 - 11 的推理任务，并返回计算结果
+
+DataNode recv data length:  401435
+DataNode recv data length:  401435
+接收来自 NameNode 的数据 recv_tensor： torch.Size([1, 512, 14, 14])
+要求计算 13 - 14 
+datanode.get_last_inference_layer() :  11
+计算第 13 层的 middle_output: torch.Size([1, 512, 14, 14])
+DataNode Pre send time: 0.010s, Total pre send time: 0.364s
+发送第 14 层的 send_tensor: torch.Size([1, 512, 14, 14])
+卷积层13-14 耗时：0.033s
+完成 13 - 14 的推理任务，并返回计算结果
+
+第 5 轮推理完成
+pre_conv:  0.013653278350830078
+pre_conv:  0.035929203033447266
+pre_conv:  0.019721269607543945
+pre_conv:  0.015050411224365234
+pre_conv:  0.012284994125366211
+DataNode_0 Pre_conv time: 0.097s, Pre_conv counts: 5
+transfer_time:  0.0888667106628418
+transfer_time:  0.008713722229003906
+transfer_time:  0.005170345306396484
+transfer_time:  0.001990079879760742
+transfer_time:  0.0006928443908691406
+DataNode_0 Transfer time: 0.105s, Transfer counts: 5
+关闭 DataNode 0 的Socket连接
+DataNode 持久化连接已关闭

@@ -4,15 +4,15 @@ sys.path.append("../..")
 sys.path.append("..")
 
 from node_test.network_op import Network_init_datanode, Network_init_namenode
-from node_test.num_set_up import Num_set_up
+from node_test.num_set_up import Num_set_up, VGG_model
 import torch
 import threading
 import time
 import torch.nn as nn
-from VGG.mydefine_VGG16 import VGG_model # set VGG mode
+# from VGG.mydefine_VGG13 import VGG_model
 from VGG.tensor_op import tensor_divide, tensor_divide_and_fill, tensor_divide_by_computing_and_fill, \
-    tensor_divide_by_computing_network_and_fill, tensor_divide_by_computing_and_network
-from VGG.tensor_op import merge_total_tensor, merge_part_tensor
+    tensor_divide_by_computing_network_and_fill, tensor_divide_by_computing_and_network_pooled
+from VGG.tensor_op import merge_total_tensor_pooled, merge_part_tensor
 from network_and_computing.network_and_computing_record import Network_And_Computing
 
 # ====================== 新增 Warm Up 配置 ======================
@@ -119,7 +119,7 @@ def run_distributed_inference_pooled(namenode, round_idx):
                 print(f"\n=== 处理卷积块: 层 {start} - {end} (包含池化层 {end + 1}) ===")
                 print(f"cross_layer: {cross_layer}")
 
-                divided_tensor_list, divide_record = tensor_divide_by_computing_and_network(
+                divided_tensor_list, divide_record = tensor_divide_by_computing_and_network_pooled(
                     middle_output,
                     datanode_num=datanode_num,
                     cross_layer=cross_layer,
@@ -142,7 +142,7 @@ def run_distributed_inference_pooled(namenode, round_idx):
                     thread_time[i].append(thread_end_time[i] - thread_start_time[i])
 
                 temp = namenode.get_recv_tensor_list()
-                middle_output = namenode.get_merged_total_tensor(cross_layer=cross_layer)
+                middle_output = namenode.get_merged_total_tensor_pooled(cross_layer=cross_layer)
                 print(f"合并后的 middle_output: {middle_output.size()}")
             else:
                 print(f"NameNode不参与第 {layer_it} 层计算")

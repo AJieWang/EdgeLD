@@ -14,11 +14,34 @@ COMPUTE_CONV_BLOCKS = {
     13: 15,
 }
 
+COMPUTE_CONV_BLOCKS_V2 = {
+    1: 3,
+    4: 6,
+    7: 9,
+    10: 12,
+    13: 15,
+}
+
+COMPUTE_CONV_BLOCKS_PABC = {
+    1: 3,
+    4: 6,
+    7: 9,
+    10: 12,
+    13: 15,
+}
+
+COMPUTE_BLOCK_1_6 = {
+    1: 6,
+}
+
+COMPUTE_PARTIAL_BLOCKS = [1]
+
 class VGG_model(nn.Module):
     def __init__(self, num_classes = 100, init_weights = True):
         super(VGG_model, self).__init__()
         self.module_list = []
         self.maxpool_layer = [3, 6, 9, 12, 15]
+        self.maxpool_layer_pabc = [6, 9, 12]
         self.c_out_list = [64, 64, 64,  128, 128, 128,  256, 256, 256,   512, 512, 512,   512, 512, 512]
 
         # 定义 forward 中用到的 中间结果 和 最终结果
@@ -248,6 +271,9 @@ class VGG_model(nn.Module):
     # 获取池化层记录
     def get_maxpool_layer(self):
         return self.maxpool_layer
+
+    def get_maxpool_layer_pabc(self):
+        return self.maxpool_layer_pabc
 
     # 参数初始化方法
     def _initialize_weights(self):

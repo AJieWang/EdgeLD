@@ -5,7 +5,7 @@ sys.path.append("..")
 import torch, time, socket, json, six
 import torch.nn as nn
 import numpy as np
-from VGG.tensor_op import merge_total_tensor, merge_part_tensor
+from VGG.tensor_op import merge_total_tensor, merge_part_tensor, merge_total_tensor_pooled, merge_total_tensor_pabc
 
 
 # IP设置
@@ -48,6 +48,24 @@ class Network_init_namenode():
         # for i in range(self.datanode_num):
         #     self.recv_tensor_temp_list[i] = torch.rand(1, 1, 1, 1)
         return temp
+
+    # ===================== 新增优化：merge_total_tensor_pooled =====================
+    def get_merged_total_tensor_pooled(self, divide_record = 0, cross_layer = 1):
+        temp = merge_total_tensor_pooled(self.recv_tensor_temp_list, divide_record = divide_record, cross_layer = cross_layer)
+        # # 原先的recv_tensor_temp_list重新初始化
+        # for i in range(self.datanode_num):
+        #     self.recv_tensor_temp_list[i] = torch.rand(1, 1, 1, 1)
+        return temp
+    # ==============================================================================
+
+    # ===================== 新增优化：merge_total_tensor_pabc =====================
+    def get_merged_total_tensor_pabc(self, divide_record = 0, cross_layer = 1):
+        temp = merge_total_tensor_pabc(self.recv_tensor_temp_list, divide_record = divide_record, cross_layer = cross_layer)
+        # # 原先的recv_tensor_temp_list重新初始化
+        # for i in range(self.datanode_num):
+        #     self.recv_tensor_temp_list[i] = torch.rand(1, 1, 1, 1)
+        return temp
+    # ==============================================================================
 
     def get_merged_part_tensor(self):
         temp = merge_part_tensor(self.recv_tensor_temp_list, divide_record=0, cross_layer=1)

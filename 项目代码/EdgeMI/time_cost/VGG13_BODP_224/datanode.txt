@@ -1,170 +1,131 @@
 ----- DataNode 0 第 4 轮推理开始 -----
 DataNode recv data length:  602135
 DataNode recv data length:  602135
-最终接受数据的长度： 602135 602135
-卷积层1-1 耗时：0.014s
-send_data长度： 12845082
-DataNode Pre send time: 0.021s, Total pre send time: 0.473s
+卷积层1-1 耗时：0.010s
+DataNode Pre send time: 0.021s, Total pre send time: 0.452s
 DataNode recv data length:  12845080
 DataNode recv data length:  12845080
-最终接受数据的长度： 12845080 12845080
-卷积层2-2 耗时：0.051s
-send_data长度： 12845082
-DataNode Pre send time: 0.015s, Total pre send time: 0.488s
+卷积层2-2 耗时：0.043s
+DataNode Pre send time: 0.013s, Total pre send time: 0.465s
 DataNode recv data length:  3211288
 DataNode recv data length:  3211288
-最终接受数据的长度： 3211288 3211288
-卷积层4-4 耗时：0.019s
-send_data长度： 6422555
-DataNode Pre send time: 0.013s, Total pre send time: 0.500s
+卷积层4-4 耗时：0.023s
+DataNode Pre send time: 0.012s, Total pre send time: 0.478s
 DataNode recv data length:  6422553
 DataNode recv data length:  6422553
-最终接受数据的长度： 6422553 6422553
-卷积层5-5 耗时：0.036s
-send_data长度： 6422555
-DataNode Pre send time: 0.013s, Total pre send time: 0.513s
+卷积层5-5 耗时：0.037s
+DataNode Pre send time: 0.012s, Total pre send time: 0.490s
 DataNode recv data length:  1605655
 DataNode recv data length:  1605655
-最终接受数据的长度： 1605655 1605655
-卷积层7-7 耗时：0.018s
-send_data长度： 3211289
-DataNode Pre send time: 0.012s, Total pre send time: 0.525s
+卷积层7-7 耗时：0.019s
+DataNode Pre send time: 0.011s, Total pre send time: 0.501s
 DataNode recv data length:  3211287
 DataNode recv data length:  3211287
-最终接受数据的长度： 3211287 3211287
-卷积层8-8 耗时：0.038s
-send_data长度： 3211289
-DataNode Pre send time: 0.012s, Total pre send time: 0.537s
+卷积层8-8 耗时：0.036s
+DataNode Pre send time: 0.012s, Total pre send time: 0.513s
 DataNode recv data length:  802841
 DataNode recv data length:  802841
-最终接受数据的长度： 802841 802841
-卷积层10-10 耗时：0.018s
-send_data长度： 1605659
-DataNode Pre send time: 0.012s, Total pre send time: 0.549s
+卷积层10-10 耗时：0.020s
+DataNode Pre send time: 0.010s, Total pre send time: 0.524s
 DataNode recv data length:  1605657
 DataNode recv data length:  1605657
-最终接受数据的长度： 1605657 1605657
-卷积层11-11 耗时：0.039s
-send_data长度： 1605659
-DataNode Pre send time: 0.011s, Total pre send time: 0.560s
+卷积层11-11 耗时：0.037s
+DataNode Pre send time: 0.011s, Total pre send time: 0.535s
 DataNode recv data length:  401433
 DataNode recv data length:  401433
-最终接受数据的长度： 401433 401433
-卷积层13-13 耗时：0.018s
-send_data长度： 401435
-DataNode Pre send time: 0.011s, Total pre send time: 0.570s
+卷积层13-13 耗时：0.010s
+DataNode Pre send time: 0.011s, Total pre send time: 0.546s
 DataNode recv data length:  401433
 DataNode recv data length:  401433
-最终接受数据的长度： 401433 401433
-卷积层14-14 耗时：0.015s
-send_data长度： 401435
-DataNode Pre send time: 0.011s, Total pre send time: 0.581s
+卷积层14-14 耗时：0.011s
+DataNode Pre send time: 0.011s, Total pre send time: 0.557s
 第 4 轮推理完成
-pre_conv:  0.014476299285888672
-pre_conv:  0.8811376094818115
-pre_conv:  0.046369314193725586
-pre_conv:  0.1810286045074463
-pre_conv:  0.02046966552734375
-pre_conv:  0.036458492279052734
-pre_conv:  0.014581680297851562
-pre_conv:  0.021285295486450195
-pre_conv:  0.01658344268798828
-pre_conv:  0.012445211410522461
-DataNode_0 Pre_conv time: 1.245s, Pre_conv counts: 10
-transfer_time:  0.14254999160766602
-transfer_time:  0.1945505142211914
-transfer_time:  0.011444807052612305
-transfer_time:  0.009131908416748047
-transfer_time:  0.005993843078613281
-transfer_time:  0.007164716720581055
-transfer_time:  0.0029680728912353516
-transfer_time:  0.0031647682189941406
-transfer_time:  0.0008974075317382812
-transfer_time:  0.0007841587066650391
-DataNode_0 Transfer time: 0.379s, Transfer counts: 10
+pre_conv:  0.013995170593261719
+pre_conv:  0.6202521324157715
+pre_conv:  0.04025149345397949
+pre_conv:  0.1287853717803955
+pre_conv:  0.021025896072387695
+pre_conv:  0.03533315658569336
+pre_conv:  0.014614582061767578
+pre_conv:  0.01995110511779785
+pre_conv:  0.012857198715209961
+pre_conv:  0.012572765350341797
+DataNode_0 Pre_conv time: 0.920s, Pre_conv counts: 10
+transfer_time:  0.07178568840026855
+transfer_time:  0.17838358879089355
+transfer_time:  0.028282880783081055
+transfer_time:  0.008718013763427734
+transfer_time:  0.00532984733581543
+transfer_time:  0.005344867706298828
+transfer_time:  0.00395655632019043
+transfer_time:  0.003047943115234375
+transfer_time:  0.0016214847564697266
+transfer_time:  0.0007300376892089844
+DataNode_0 Transfer time: 0.307s, Transfer counts: 10
 
 ----- DataNode 0 第 5 轮推理开始 -----
 DataNode recv data length:  602135
 DataNode recv data length:  602135
-最终接受数据的长度： 602135 602135
-卷积层1-1 耗时：0.012s
-send_data长度： 12845082
-DataNode Pre send time: 0.020s, Total pre send time: 0.601s
+卷积层1-1 耗时：0.016s
+DataNode Pre send time: 0.018s, Total pre send time: 0.574s
 DataNode recv data length:  12845080
 DataNode recv data length:  12845080
-最终接受数据的长度： 12845080 12845080
-卷积层2-2 耗时：0.043s
-send_data长度： 12845082
-DataNode Pre send time: 0.014s, Total pre send time: 0.615s
+卷积层2-2 耗时：0.045s
+DataNode Pre send time: 0.014s, Total pre send time: 0.588s
 DataNode recv data length:  3211288
 DataNode recv data length:  3211288
-最终接受数据的长度： 3211288 3211288
-卷积层4-4 耗时：0.060s
-send_data长度： 6422555
-DataNode Pre send time: 0.015s, Total pre send time: 0.630s
+卷积层4-4 耗时：0.020s
+DataNode Pre send time: 0.012s, Total pre send time: 0.601s
 DataNode recv data length:  6422553
 DataNode recv data length:  6422553
-最终接受数据的长度： 6422553 6422553
-卷积层5-5 耗时：0.050s
-send_data长度： 6422555
-DataNode Pre send time: 0.014s, Total pre send time: 0.644s
+卷积层5-5 耗时：0.041s
+DataNode Pre send time: 0.012s, Total pre send time: 0.613s
 DataNode recv data length:  1605655
 DataNode recv data length:  1605655
-最终接受数据的长度： 1605655 1605655
-卷积层7-7 耗时：0.019s
-send_data长度： 3211289
-DataNode Pre send time: 0.012s, Total pre send time: 0.656s
+卷积层7-7 耗时：0.033s
+DataNode Pre send time: 0.011s, Total pre send time: 0.625s
 DataNode recv data length:  3211287
 DataNode recv data length:  3211287
-最终接受数据的长度： 3211287 3211287
-卷积层8-8 耗时：0.035s
-send_data长度： 3211289
-DataNode Pre send time: 0.013s, Total pre send time: 0.668s
+卷积层8-8 耗时：0.044s
+DataNode Pre send time: 0.012s, Total pre send time: 0.636s
 DataNode recv data length:  802841
 DataNode recv data length:  802841
-最终接受数据的长度： 802841 802841
-卷积层10-10 耗时：0.020s
-send_data长度： 1605659
-DataNode Pre send time: 0.012s, Total pre send time: 0.680s
+卷积层10-10 耗时：0.019s
+DataNode Pre send time: 0.010s, Total pre send time: 0.647s
 DataNode recv data length:  1605657
 DataNode recv data length:  1605657
-最终接受数据的长度： 1605657 1605657
-卷积层11-11 耗时：0.043s
-send_data长度： 1605659
-DataNode Pre send time: 0.012s, Total pre send time: 0.692s
+卷积层11-11 耗时：0.040s
+DataNode Pre send time: 0.011s, Total pre send time: 0.658s
 DataNode recv data length:  401433
 DataNode recv data length:  401433
-最终接受数据的长度： 401433 401433
-卷积层13-13 耗时：0.013s
-send_data长度： 401435
-DataNode Pre send time: 0.011s, Total pre send time: 0.703s
+卷积层13-13 耗时：0.012s
+DataNode Pre send time: 0.010s, Total pre send time: 0.668s
 DataNode recv data length:  401433
 DataNode recv data length:  401433
-最终接受数据的长度： 401433 401433
 卷积层14-14 耗时：0.013s
-send_data长度： 401435
-DataNode Pre send time: 0.011s, Total pre send time: 0.714s
+DataNode Pre send time: 0.011s, Total pre send time: 0.679s
 第 5 轮推理完成
-pre_conv:  0.01461935043334961
-pre_conv:  0.9125800132751465
-pre_conv:  0.05095553398132324
-pre_conv:  0.12277841567993164
-pre_conv:  0.022557497024536133
-pre_conv:  0.03728604316711426
-pre_conv:  0.016231060028076172
-pre_conv:  0.021390199661254883
-pre_conv:  0.012981176376342773
-pre_conv:  0.013480901718139648
-DataNode_0 Pre_conv time: 1.225s, Pre_conv counts: 10
-transfer_time:  0.08739376068115234
-transfer_time:  0.22886204719543457
-transfer_time:  0.009732484817504883
-transfer_time:  0.009068012237548828
-transfer_time:  0.0063626766204833984
-transfer_time:  0.005918264389038086
-transfer_time:  0.0030477046966552734
-transfer_time:  0.0027158260345458984
-transfer_time:  0.0007178783416748047
-transfer_time:  0.000759124755859375
-DataNode_0 Transfer time: 0.355s, Transfer counts: 10
+pre_conv:  0.015818357467651367
+pre_conv:  0.6100754737854004
+pre_conv:  0.03893303871154785
+pre_conv:  0.18456482887268066
+pre_conv:  0.023456335067749023
+pre_conv:  0.0410614013671875
+pre_conv:  0.01485133171081543
+pre_conv:  0.020025253295898438
+pre_conv:  0.012920141220092773
+pre_conv:  0.013304948806762695
+DataNode_0 Pre_conv time: 0.975s, Pre_conv counts: 10
+transfer_time:  0.07228398323059082
+transfer_time:  0.10099315643310547
+transfer_time:  0.009617328643798828
+transfer_time:  0.007772922515869141
+transfer_time:  0.005898475646972656
+transfer_time:  0.005946159362792969
+transfer_time:  0.003620147705078125
+transfer_time:  0.002480030059814453
+transfer_time:  0.0006737709045410156
+transfer_time:  0.0007853507995605469
+DataNode_0 Transfer time: 0.210s, Transfer counts: 10
+关闭 DataNode 0 的Socket连接
 DataNode 持久化连接已关闭

@@ -112,7 +112,7 @@ def run_distributed_inference_env4(namenode, round_idx):
             if layer_it > conv_length:
                 # 全连接层计算
                 linear_start = time.time()
-                middle_output = inference_model(middle_output, layer_it, total_length)
+                middle_output = inference_model(middle_output, layer_it, layer_it)
                 linear_end = time.time()
                 print(f'全连接层耗时：{linear_end - linear_start:.3f}s')
                 print("全连接层输出数据大小：", middle_output.size())
