@@ -230,7 +230,7 @@ def run_distributed_inference_PABC(namenode, round_idx):
                     middle_output = namenode.get_merged_total_tensor(cross_layer=cross_layer)
                     print(f"合并后的 middle_output: {middle_output.size()}")
                     continue
-                else:
+                elif start - 1 in maxpool_layer_pabc:
                     # 原有pooled模式
                     end = get_end_layer(start, maxpool_layer) - 1
                     cross_layer = end - start + 1
@@ -251,6 +251,10 @@ def run_distributed_inference_PABC(namenode, round_idx):
                     temp = namenode.get_recv_tensor_list()
                     middle_output = namenode.get_merged_total_tensor(cross_layer=cross_layer)
                     print(f"合并后的 middle_output: {middle_output.size()}")
+                else:
+                    print(f"NameNode不参与第 {layer_it} 层计算")
+                    continue
+                    
             else:
                 print(f"NameNode不参与第 {layer_it} 层计算")
                 continue

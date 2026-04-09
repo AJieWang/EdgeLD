@@ -75,18 +75,21 @@ def datanode_persistent_pooled():
                     print(f"PABC模式第一步-完整块: 层 {start} - {block_end} (包含池化层3)")
                     middle_output = inference_model(recv_tensor, start, block_end)
                     print("计算完成 middle_output:", middle_output.size())
-                    print("第六层池化前分割")
-                    divide_layer = 3
-                    if datanode_name == 0:
-                        # 最左侧
-                        middle_output = middle_output[:, :, :, 0:-divide_layer]
-                    elif datanode_name == datanode_num - 1:
-                        # 最右侧
-                        middle_output = middle_output[:, :, :, divide_layer:]
+                    if datanode_num != 1:
+                        print("第六层池化前分割")
+                        divide_layer = 3
+                        if datanode_name == 0:
+                            # 最左侧
+                            middle_output = middle_output[:, :, :, 0:-divide_layer]
+                        elif datanode_name == datanode_num - 1:
+                            # 最右侧
+                            middle_output = middle_output[:, :, :, divide_layer:]
+                        else:
+                            # 中间非边界
+                            middle_output = middle_output[:, :, :, divide_layer: -divide_layer]
+                        print("分割后张量大小:", middle_output.size())
                     else:
-                        # 中间非边界
-                        middle_output = middle_output[:, :, :, divide_layer: -divide_layer]
-                    print("分割后张量大小:", middle_output.size())
+                        print("单个节点无需切割")
                     print(f"PABC模式第二步-第六层池化: 层 {block_end + 1} - {block_end + 1} (池化层6)")
                     middle_output = inference_model(middle_output, block_end + 1, block_end + 1)
                     print("计算完成 middle_output:", middle_output.size())

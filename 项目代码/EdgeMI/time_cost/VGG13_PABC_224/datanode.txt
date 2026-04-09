@@ -5,9 +5,9 @@ DataNode recv data length:  602137
 要求计算 1 - 2 
 计算卷积块: 层 1 - 3 (包含池化层)
 计算完成 middle_output: torch.Size([1, 64, 112, 112])
-DataNode Pre send time: 0.012s, Total pre send time: 0.183s
+DataNode Pre send time: 0.012s, Total pre send time: 0.190s
 发送第 3 层的结果 (包含池化)
-卷积块1-3 耗时：0.093s
+卷积块1-3 耗时：0.078s
 完成 1 - 2 的推理任务，并返回计算结果
 
 DataNode recv data length:  3211290
@@ -16,9 +16,9 @@ DataNode recv data length:  3211290
 要求计算 4 - 5 
 计算卷积块: 层 4 - 6 (包含池化层)
 计算完成 middle_output: torch.Size([1, 128, 56, 56])
-DataNode Pre send time: 0.012s, Total pre send time: 0.195s
+DataNode Pre send time: 0.012s, Total pre send time: 0.201s
 发送第 6 层的结果 (包含池化)
-卷积块4-6 耗时：0.093s
+卷积块4-6 耗时：0.090s
 完成 4 - 5 的推理任务，并返回计算结果
 
 DataNode recv data length:  1605657
@@ -27,9 +27,9 @@ DataNode recv data length:  1605657
 要求计算 7 - 8 
 计算卷积块: 层 7 - 9 (包含池化层)
 计算完成 middle_output: torch.Size([1, 256, 28, 28])
-DataNode Pre send time: 0.010s, Total pre send time: 0.206s
+DataNode Pre send time: 0.011s, Total pre send time: 0.213s
 发送第 9 层的结果 (包含池化)
-卷积块7-9 耗时：0.072s
+卷积块7-9 耗时：0.069s
 完成 7 - 8 的推理任务，并返回计算结果
 
 DataNode recv data length:  802843
@@ -38,9 +38,9 @@ DataNode recv data length:  802843
 要求计算 10 - 11 
 计算卷积块: 层 10 - 12 (包含池化层)
 计算完成 middle_output: torch.Size([1, 512, 14, 14])
-DataNode Pre send time: 0.011s, Total pre send time: 0.217s
+DataNode Pre send time: 0.010s, Total pre send time: 0.223s
 发送第 12 层的结果 (包含池化)
-卷积块10-12 耗时：0.071s
+卷积块10-12 耗时：0.070s
 完成 10 - 11 的推理任务，并返回计算结果
 
 DataNode recv data length:  401435
@@ -49,24 +49,24 @@ DataNode recv data length:  401435
 要求计算 13 - 14 
 计算卷积块: 层 13 - 15 (包含池化层)
 计算完成 middle_output: torch.Size([1, 512, 7, 7])
-DataNode Pre send time: 0.011s, Total pre send time: 0.228s
+DataNode Pre send time: 0.011s, Total pre send time: 0.234s
 发送第 15 层的结果 (包含池化)
-卷积块13-15 耗时：0.036s
+卷积块13-15 耗时：0.037s
 完成 13 - 14 的推理任务，并返回计算结果
 
 第 4 轮推理完成
-pre_conv:  0.013755083084106445
-pre_conv:  0.032949209213256836
-pre_conv:  0.020545005798339844
-pre_conv:  0.014722824096679688
-pre_conv:  0.013802289962768555
-DataNode_0 Pre_conv time: 0.096s, Pre_conv counts: 5
-transfer_time:  0.0052394866943359375
-transfer_time:  0.003316640853881836
-transfer_time:  0.001664876937866211
-transfer_time:  0.0007088184356689453
-transfer_time:  0.00018024444580078125
-DataNode_0 Transfer time: 0.011s, Transfer counts: 5
+pre_conv:  0.014427423477172852
+pre_conv:  0.03743386268615723
+pre_conv:  0.020131587982177734
+pre_conv:  0.014801740646362305
+pre_conv:  0.012526750564575195
+DataNode_0 Pre_conv time: 0.099s, Pre_conv counts: 5
+transfer_time:  0.005715608596801758
+transfer_time:  0.003335237503051758
+transfer_time:  0.0018107891082763672
+transfer_time:  0.0006177425384521484
+transfer_time:  0.0002562999725341797
+DataNode_0 Transfer time: 0.012s, Transfer counts: 5
 
 ----- DataNode 0 第 5 轮推理开始 -----
 DataNode recv data length:  602137
@@ -75,9 +75,9 @@ DataNode recv data length:  602137
 要求计算 1 - 2 
 计算卷积块: 层 1 - 3 (包含池化层)
 计算完成 middle_output: torch.Size([1, 64, 112, 112])
-DataNode Pre send time: 0.015s, Total pre send time: 0.243s
+DataNode Pre send time: 0.014s, Total pre send time: 0.247s
 发送第 3 层的结果 (包含池化)
-卷积块1-3 耗时：0.119s
+卷积块1-3 耗时：0.083s
 完成 1 - 2 的推理任务，并返回计算结果
 
 DataNode recv data length:  3211290
@@ -86,9 +86,9 @@ DataNode recv data length:  3211290
 要求计算 4 - 5 
 计算卷积块: 层 4 - 6 (包含池化层)
 计算完成 middle_output: torch.Size([1, 128, 56, 56])
-DataNode Pre send time: 0.011s, Total pre send time: 0.254s
+DataNode Pre send time: 0.011s, Total pre send time: 0.259s
 发送第 6 层的结果 (包含池化)
-卷积块4-6 耗时：0.081s
+卷积块4-6 耗时：0.079s
 完成 4 - 5 的推理任务，并返回计算结果
 
 DataNode recv data length:  1605657
@@ -97,9 +97,9 @@ DataNode recv data length:  1605657
 要求计算 7 - 8 
 计算卷积块: 层 7 - 9 (包含池化层)
 计算完成 middle_output: torch.Size([1, 256, 28, 28])
-DataNode Pre send time: 0.011s, Total pre send time: 0.265s
+DataNode Pre send time: 0.011s, Total pre send time: 0.270s
 发送第 9 层的结果 (包含池化)
-卷积块7-9 耗时：0.068s
+卷积块7-9 耗时：0.076s
 完成 7 - 8 的推理任务，并返回计算结果
 
 DataNode recv data length:  802843
@@ -108,9 +108,9 @@ DataNode recv data length:  802843
 要求计算 10 - 11 
 计算卷积块: 层 10 - 12 (包含池化层)
 计算完成 middle_output: torch.Size([1, 512, 14, 14])
-DataNode Pre send time: 0.011s, Total pre send time: 0.276s
+DataNode Pre send time: 0.011s, Total pre send time: 0.281s
 发送第 12 层的结果 (包含池化)
-卷积块10-12 耗时：0.072s
+卷积块10-12 耗时：0.074s
 完成 10 - 11 的推理任务，并返回计算结果
 
 DataNode recv data length:  401435
@@ -119,23 +119,23 @@ DataNode recv data length:  401435
 要求计算 13 - 14 
 计算卷积块: 层 13 - 15 (包含池化层)
 计算完成 middle_output: torch.Size([1, 512, 7, 7])
-DataNode Pre send time: 0.011s, Total pre send time: 0.287s
+DataNode Pre send time: 0.011s, Total pre send time: 0.292s
 发送第 15 层的结果 (包含池化)
-卷积块13-15 耗时：0.035s
+卷积块13-15 耗时：0.034s
 完成 13 - 14 的推理任务，并返回计算结果
 
 第 5 轮推理完成
-pre_conv:  0.013260126113891602
-pre_conv:  0.04994630813598633
-pre_conv:  0.020297527313232422
-pre_conv:  0.014878511428833008
-pre_conv:  0.012740850448608398
-DataNode_0 Pre_conv time: 0.111s, Pre_conv counts: 5
-transfer_time:  0.01684427261352539
-transfer_time:  0.002789020538330078
-transfer_time:  0.0013918876647949219
-transfer_time:  0.0008594989776611328
-transfer_time:  0.00017023086547851562
-DataNode_0 Transfer time: 0.022s, Transfer counts: 5
+pre_conv:  0.013445138931274414
+pre_conv:  0.04334449768066406
+pre_conv:  0.023106098175048828
+pre_conv:  0.0163419246673584
+pre_conv:  0.013199329376220703
+DataNode_0 Pre_conv time: 0.109s, Pre_conv counts: 5
+transfer_time:  0.005982398986816406
+transfer_time:  0.002990245819091797
+transfer_time:  0.0018062591552734375
+transfer_time:  0.0006351470947265625
+transfer_time:  0.0001766681671142578
+DataNode_0 Transfer time: 0.012s, Transfer counts: 5
 关闭 DataNode 0 的Socket连接
 DataNode 持久化连接已关闭
