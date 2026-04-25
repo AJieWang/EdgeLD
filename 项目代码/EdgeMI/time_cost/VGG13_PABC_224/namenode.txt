@@ -1,122 +1,110 @@
-========== 第 4 轮运行 (Pooled) ==========
+========== 第 4 轮运行 (PABC模式) ==========
 
-=== 处理卷积块: 层 1 - 2 (包含池化层 3) ===
-cross_layer: 2
-NameNode Pre send time: 0.012s, Total pre send time: 0.188s
-NameNode After receive time: 0.004s, Total after receive time: 0.038s
-合并后的 middle_output: torch.Size([1, 64, 112, 112])
+=== PABC模式-完整块: 层 1 - 6 (包含池化层3和6) ===
+cross_layer: 6
+NameNode Pre send time: 0.011s, Total pre send time: 0.153s
+NameNode After receive time: 0.003s, Total after receive time: 0.020s
+合并后的 middle_output: torch.Size([1, 128, 56, 56])
 NameNode不参与第 2 层计算
 池化层 3 由DataNode计算，NameNode跳过
-
-=== 处理卷积块: 层 4 - 5 (包含池化层 6) ===
-cross_layer: 2
-NameNode Pre send time: 0.013s, Total pre send time: 0.201s
-NameNode After receive time: 0.002s, Total after receive time: 0.041s
-合并后的 middle_output: torch.Size([1, 128, 56, 56])
+NameNode不参与第 4 层计算
 NameNode不参与第 5 层计算
 池化层 6 由DataNode计算，NameNode跳过
 
 === 处理卷积块: 层 7 - 8 (包含池化层 9) ===
 cross_layer: 2
-NameNode Pre send time: 0.011s, Total pre send time: 0.212s
-NameNode After receive time: 0.001s, Total after receive time: 0.042s
+NameNode Pre send time: 0.011s, Total pre send time: 0.165s
+NameNode After receive time: 0.001s, Total after receive time: 0.021s
 合并后的 middle_output: torch.Size([1, 256, 28, 28])
 NameNode不参与第 8 层计算
 池化层 9 由DataNode计算，NameNode跳过
 
 === 处理卷积块: 层 10 - 11 (包含池化层 12) ===
 cross_layer: 2
-NameNode Pre send time: 0.011s, Total pre send time: 0.223s
-NameNode After receive time: 0.001s, Total after receive time: 0.043s
+NameNode Pre send time: 0.013s, Total pre send time: 0.178s
+NameNode After receive time: 0.001s, Total after receive time: 0.022s
 合并后的 middle_output: torch.Size([1, 512, 14, 14])
 NameNode不参与第 11 层计算
 池化层 12 由DataNode计算，NameNode跳过
 
 === 处理卷积块: 层 13 - 14 (包含池化层 15) ===
 cross_layer: 2
-NameNode Pre send time: 0.010s, Total pre send time: 0.233s
-NameNode After receive time: 0.000s, Total after receive time: 0.043s
+NameNode Pre send time: 0.011s, Total pre send time: 0.189s
+NameNode After receive time: 0.000s, Total after receive time: 0.022s
 合并后的 middle_output: torch.Size([1, 512, 7, 7])
 NameNode不参与第 14 层计算
 池化层 15 由DataNode计算，NameNode跳过
-全连接层 16 耗时：0.016s
+全连接层 16 耗时：0.023s
+全连接层 16 输出数据大小： torch.Size([1, 4096])
+全连接层 17 耗时：0.004s
+全连接层 17 输出数据大小： torch.Size([1, 4096])
+全连接层 18 耗时：0.000s
+全连接层 18 输出数据大小： torch.Size([1, 100])
+
+第 4 轮完成 (PABC模式)
+本轮总耗时：0.457s | 本轮总传输耗时：0.007s
+
+第 4 轮为有效结果, 输出时间
+Thread time: 0.425s, Thread counts: 4
+transfer_time:  0.00046706199645996094
+transfer_time:  0.0027000904083251953
+transfer_time:  0.002110004425048828
+transfer_time:  0.0012426376342773438
+NameNode Transfer time: 0.007s, Transfer counts: 4
+
+========== 第 5 轮运行 (PABC模式) ==========
+
+=== PABC模式-完整块: 层 1 - 6 (包含池化层3和6) ===
+cross_layer: 6
+NameNode Pre send time: 0.011s, Total pre send time: 0.199s
+NameNode After receive time: 0.003s, Total after receive time: 0.025s
+合并后的 middle_output: torch.Size([1, 128, 56, 56])
+NameNode不参与第 2 层计算
+池化层 3 由DataNode计算，NameNode跳过
+NameNode不参与第 4 层计算
+NameNode不参与第 5 层计算
+池化层 6 由DataNode计算，NameNode跳过
+
+=== 处理卷积块: 层 7 - 8 (包含池化层 9) ===
+cross_layer: 2
+NameNode Pre send time: 0.011s, Total pre send time: 0.210s
+NameNode After receive time: 0.001s, Total after receive time: 0.026s
+合并后的 middle_output: torch.Size([1, 256, 28, 28])
+NameNode不参与第 8 层计算
+池化层 9 由DataNode计算，NameNode跳过
+
+=== 处理卷积块: 层 10 - 11 (包含池化层 12) ===
+cross_layer: 2
+NameNode Pre send time: 0.010s, Total pre send time: 0.220s
+NameNode After receive time: 0.001s, Total after receive time: 0.027s
+合并后的 middle_output: torch.Size([1, 512, 14, 14])
+NameNode不参与第 11 层计算
+池化层 12 由DataNode计算，NameNode跳过
+
+=== 处理卷积块: 层 13 - 14 (包含池化层 15) ===
+cross_layer: 2
+NameNode Pre send time: 0.011s, Total pre send time: 0.232s
+NameNode After receive time: 0.000s, Total after receive time: 0.027s
+合并后的 middle_output: torch.Size([1, 512, 7, 7])
+NameNode不参与第 14 层计算
+池化层 15 由DataNode计算，NameNode跳过
+全连接层 16 耗时：0.018s
 全连接层 16 输出数据大小： torch.Size([1, 4096])
 全连接层 17 耗时：0.003s
 全连接层 17 输出数据大小： torch.Size([1, 4096])
 全连接层 18 耗时：0.000s
 全连接层 18 输出数据大小： torch.Size([1, 100])
 
-第 4 轮完成 (Pooled)
-本轮总耗时：0.501s | 本轮总传输耗时：0.010s
-
-第 4 轮为有效结果, 输出时间
-Thread time: 0.477s, Thread counts: 5
-transfer_time:  0.0007369518280029297
-transfer_time:  0.0028815269470214844
-transfer_time:  0.0031728744506835938
-transfer_time:  0.0018835067749023438
-transfer_time:  0.0012068748474121094
-NameNode Transfer time: 0.010s, Transfer counts: 5
-
-========== 第 5 轮运行 (Pooled) ==========
-
-=== 处理卷积块: 层 1 - 2 (包含池化层 3) ===
-cross_layer: 2
-NameNode Pre send time: 0.011s, Total pre send time: 0.244s
-NameNode After receive time: 0.004s, Total after receive time: 0.047s
-合并后的 middle_output: torch.Size([1, 64, 112, 112])
-NameNode不参与第 2 层计算
-池化层 3 由DataNode计算，NameNode跳过
-
-=== 处理卷积块: 层 4 - 5 (包含池化层 6) ===
-cross_layer: 2
-NameNode Pre send time: 0.013s, Total pre send time: 0.256s
-NameNode After receive time: 0.003s, Total after receive time: 0.050s
-合并后的 middle_output: torch.Size([1, 128, 56, 56])
-NameNode不参与第 5 层计算
-池化层 6 由DataNode计算，NameNode跳过
-
-=== 处理卷积块: 层 7 - 8 (包含池化层 9) ===
-cross_layer: 2
-NameNode Pre send time: 0.012s, Total pre send time: 0.268s
-NameNode After receive time: 0.001s, Total after receive time: 0.051s
-合并后的 middle_output: torch.Size([1, 256, 28, 28])
-NameNode不参与第 8 层计算
-池化层 9 由DataNode计算，NameNode跳过
-
-=== 处理卷积块: 层 10 - 11 (包含池化层 12) ===
-cross_layer: 2
-NameNode Pre send time: 0.011s, Total pre send time: 0.280s
-NameNode After receive time: 0.001s, Total after receive time: 0.052s
-合并后的 middle_output: torch.Size([1, 512, 14, 14])
-NameNode不参与第 11 层计算
-池化层 12 由DataNode计算，NameNode跳过
-
-=== 处理卷积块: 层 13 - 14 (包含池化层 15) ===
-cross_layer: 2
-NameNode Pre send time: 0.011s, Total pre send time: 0.291s
-NameNode After receive time: 0.000s, Total after receive time: 0.052s
-合并后的 middle_output: torch.Size([1, 512, 7, 7])
-NameNode不参与第 14 层计算
-池化层 15 由DataNode计算，NameNode跳过
-全连接层 16 耗时：0.023s
-全连接层 16 输出数据大小： torch.Size([1, 4096])
-全连接层 17 耗时：0.007s
-全连接层 17 输出数据大小： torch.Size([1, 4096])
-全连接层 18 耗时：0.000s
-全连接层 18 输出数据大小： torch.Size([1, 100])
-
-第 5 轮完成 (Pooled)
-本轮总耗时：0.529s | 本轮总传输耗时：0.015s
+第 5 轮完成 (PABC模式)
+本轮总耗时：0.443s | 本轮总传输耗时：0.007s
 
 第 5 轮为有效结果, 输出时间
-Thread time: 0.493s, Thread counts: 5
-transfer_time:  0.0006194114685058594
-transfer_time:  0.005999565124511719
-transfer_time:  0.004052639007568359
-transfer_time:  0.003204345703125
-transfer_time:  0.0012271404266357422
-NameNode Transfer time: 0.015s, Transfer counts: 5
+Thread time: 0.417s, Thread counts: 4
+transfer_time:  0.0006306171417236328
+transfer_time:  0.0035254955291748047
+transfer_time:  0.0020799636840820312
+transfer_time:  0.0011298656463623047
+NameNode Transfer time: 0.007s, Transfer counts: 4
 
 ========== 所有轮次完成 ==========
 预热轮次：3 | 有效轮次：2

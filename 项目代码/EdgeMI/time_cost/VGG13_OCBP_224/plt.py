@@ -92,11 +92,11 @@ plt.bar(
 )
 
 # ===================== 统一纵轴 =====================
-plt.ylim(0, 1.01)
-plt.yticks(np.arange(0, 1.01, 0.10))
+# plt.ylim(0, 1.01)
+# plt.yticks(np.arange(0, 1.01, 0.10))
 
-# plt.ylim(0, 0.30)
-# plt.yticks(np.arange(0, 0.26, 0.05))
+plt.ylim(0, 0.22)
+plt.yticks(np.arange(0, 0.22, 0.03))
 
 # 通用标签配置（保持原有）
 all_labels = conv_labels + fl_labels
