@@ -14,7 +14,7 @@ import threading
 num_set_up = Num_set_up()
 namenode_num = num_set_up.get_namenode_num()
 datanode_num = num_set_up.get_datanode_num()
-datanode_name = 0
+datanode_name = 1
 cross_layer = 1
 
 # 加载、初始化模型

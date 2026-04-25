@@ -44,6 +44,8 @@ class VGG_model(nn.Module):
         self.maxpool_layer_pabc = [6, 10, 14]
         self.c_out_list = [64, 64, 64,  128, 128, 128,  256, 256, 256, 256,  512, 512, 512, 512,  512, 512, 512, 512]
 
+        self.vgg_mode = "VGG16"
+        
         # 定义 forward 中用到的 中间结果 和 最终结果
         self.middle_result = torch.rand(1, 1, 1, 1)
         self.final_result = torch.rand(1, 100)

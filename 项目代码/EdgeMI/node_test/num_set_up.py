@@ -1,5 +1,13 @@
-from VGG.mydefine_VGG13 import VGG_model, COMPUTE_CONV_BLOCKS, COMPUTE_CONV_BLOCKS_PABC, COMPUTE_PARTIAL_BLOCKS, COMPUTE_BLOCK_1_6
+import torch
+from VGG.mydefine_VGG16 import VGG_model, COMPUTE_CONV_BLOCKS, COMPUTE_CONV_BLOCKS_PABC, COMPUTE_PARTIAL_BLOCKS, COMPUTE_BLOCK_1_6
+
+data_frame = 1
+width = 448
+
+sample_tensor = torch.rand(data_frame, 3, width, width)
+
 datanode_num_temp = 3
+
 class Num_set_up(object):
     def __init__(self ):
         self.namenode_num = 1

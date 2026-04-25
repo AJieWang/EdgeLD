@@ -14,7 +14,7 @@ import threading
 num_set_up = Num_set_up()
 namenode_num = num_set_up.get_namenode_num()
 datanode_num = num_set_up.get_datanode_num()
-datanode_name = 0
+datanode_name = 2
 cross_layer = 1
 
 # 加载、初始化模型
@@ -51,6 +51,7 @@ def datanode_persistent():
         try:
             while True:
                 start, end, recv_tensor = datanode.datanode_recv_data(pre_conv)
+                # recv_tensor = recv_tensor.unsqueeze(0)
                 
                 # 推理
                 conv_start = time.time()

@@ -4,12 +4,11 @@ sys.path.append("../..")
 sys.path.append("..")
 
 from node_test.network_op import Network_init_datanode, Network_init_namenode
-from node_test.num_set_up import Num_set_up, VGG_model, COMPUTE_CONV_BLOCKS_PABC, COMPUTE_PARTIAL_BLOCKS, COMPUTE_BLOCK_1_6
+from node_test.num_set_up import Num_set_up, VGG_model, sample_tensor, COMPUTE_CONV_BLOCKS_PABC, COMPUTE_PARTIAL_BLOCKS, COMPUTE_BLOCK_1_6
 import torch
 import threading
 import time
 import torch.nn as nn
-# from VGG.mydefine_VGG16 import VGG_model, COMPUTE_CONV_BLOCKS_PABC, COMPUTE_PARTIAL_BLOCKS, COMPUTE_BLOCK_1_6
 from VGG.tensor_op import tensor_divide, tensor_divide_and_fill, tensor_divide_by_computing_and_fill, \
     tensor_divide_by_computing_network_and_fill, tensor_divide_by_computing_and_network, \
     tensor_divide_by_computing_and_network_pabc, tensor_divide_by_computing_and_network_pooled
@@ -37,7 +36,6 @@ total_length = inference_model.get_total_length()
 c_out_list = inference_model.get_c_out()
 maxpool_layer = inference_model.get_maxpool_layer()
 maxpool_layer_pabc = inference_model.get_maxpool_layer_pabc()
-width = 224
 
 # ====================== 时间统计相关全局变量 ======================
 transfer_time = []
@@ -45,6 +43,8 @@ thread_start_time = []
 thread_end_time = []
 thread_time = []
 # =================================================================
+
+
 
 def send_total_data(datanode_name, input_tensor, start, end, transfer_time_):
     """发送全量数据，带传输时间统计"""
@@ -98,7 +98,7 @@ def run_distributed_inference_PABC(namenode, round_idx):
     thread_time = [[] for _ in range(datanode_num)]
 
     # 初始化输入和线程/接收列表
-    input_tensor = torch.rand(1, 3, width, width)
+    input_tensor = sample_tensor
     middle_output = input_tensor
     thread = [0] * datanode_num
     recv_tensor_list = [0] * datanode_num
@@ -158,7 +158,7 @@ def run_distributed_inference_PABC(namenode, round_idx):
                     # 原有pooled模式：DataNode只计算卷积层，NameNode计算池化层
                     end = get_end_layer(start, maxpool_layer) - 1
                     cross_layer = end - start + 1
-                    print(f"\n=== 处理卷积块: 层 {start} - {end} (包含池化层 {end + 1}) ===")
+                    print(f"\n=== 处理卷积块: 层 {start} - {end + 1} (包含池化层 {end + 1}) ===")
                     print(f"cross_layer: {cross_layer}")
 
                     divided_tensor_list, divide_record = tensor_divide_by_computing_and_network_pooled(
@@ -184,7 +184,7 @@ def run_distributed_inference_PABC(namenode, round_idx):
                         thread_time[i].append(thread_end_time[i] - thread_start_time[i])
 
                     temp = namenode.get_recv_tensor_list()
-                    middle_output = namenode.get_merged_total_tensor_pooled(cross_layer=cross_layer)
+                    middle_output = namenode.get_merged_total_tensor_pabc(cross_layer=cross_layer)
                     print(f"合并后的 middle_output: {middle_output.size()}")
                 else:
                     print(f"NameNode不参与第 {layer_it} 层计算")
@@ -234,7 +234,7 @@ def run_distributed_inference_PABC(namenode, round_idx):
                     # 原有pooled模式
                     end = get_end_layer(start, maxpool_layer) - 1
                     cross_layer = end - start + 1
-                    print(f"\n=== 处理卷积块: 层 {start} - {end} (包含池化层 {end + 1}) ===")
+                    print(f"\n=== 处理卷积块: 层 {start} - {end + 1} (包含池化层 {end + 1}) ===")
                     print(f"cross_layer: {cross_layer}")
 
                     for i in range(datanode_num):

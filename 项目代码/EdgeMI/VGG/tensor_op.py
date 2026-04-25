@@ -5,7 +5,7 @@ sys.path.append("..")
 import torch
 import torch.nn as nn
 import numpy as np
-from VGG.mydefine_VGG16 import VGG_model
+import torch.nn.functional as F
 
 # 针对设备计算能力 和 网络通信状态的
 def tensor_divide_by_computing_network_and_fill(original_tensor, datanode_num = 1, cross_layer = 1, in_chanel = 1,
@@ -327,29 +327,62 @@ def tensor_divide_by_computing_and_network_pooled(original_tensor, datanode_num=
             idx = (idx + 1) % datanode_num
         # ==========================================================================
 
-        # 已经得到length，根据length确定划分范围
+        # # 已经得到length，根据length确定划分范围
+        # start = 0
+        # end = 0
+        # for it in range(datanode_num):
+        #     end = start + length[it]
+        #     # print("[ %d, %d]" % (start, end))
+        #     divide_record[it][0] = start
+        #     divide_record[it][1] = end
+        #     # 判断划分的位置
+        #     temp_tensor = 0
+        #     if it == 0:
+        #         # 最左边划分
+        #         temp_tensor = original_tensor[:, :, :, start: int(end + cross_layer)]
+        #     elif it == datanode_num - 1:
+        #         # 最右边划分
+        #         temp_tensor = original_tensor[:, :, :, int(start - cross_layer): end]
+        #     else:
+        #         # 中间非边界情况
+        #         temp_tensor = original_tensor[:, :, :, int(start - cross_layer): int(end + cross_layer)]
+        #     # 放入list
+        #     divided_tensor.append(temp_tensor)
+        #     # 更换起始位置。
+        #     start = end
+
+        # ======================================= Fix:张量（Tensor）的分段 + 边界扩展填充 =======================================
         start = 0
-        end = 0
         for it in range(datanode_num):
             end = start + length[it]
-            # print("[ %d, %d]" % (start, end))
             divide_record[it][0] = start
             divide_record[it][1] = end
-            # 判断划分的位置
-            temp_tensor = 0
-            if it == 0:
-                # 最左边划分
-                temp_tensor = original_tensor[:, :, :, start: int(end + cross_layer)]
-            elif it == datanode_num - 1:
-                # 最右边划分
-                temp_tensor = original_tensor[:, :, :, int(start - cross_layer): end]
-            else:
-                # 中间非边界情况
-                temp_tensor = original_tensor[:, :, :, int(start - cross_layer): int(end + cross_layer)]
-            # 放入list
+
+            # 计算本段左右各需扩展多少（边界段只向内扩展）
+            left_pad = cross_layer if it > 0 else 0
+            right_pad = cross_layer if it < datanode_num - 1 else 0
+
+            left_idx = start - left_pad
+            right_idx = end + right_pad
+
+            # 取出与原始张量有交集的部分
+            orig_len = original_tensor.shape[-1]
+            valid_left = max(left_idx, 0)
+            valid_right = min(right_idx, orig_len)
+
+            temp_tensor = original_tensor[..., valid_left:valid_right]
+
+            # 计算需要在左右填充的零的数量
+            pad_left = valid_left - left_idx
+            pad_right = right_idx - valid_right
+
+            if pad_left > 0 or pad_right > 0:
+                # F.pad 对最后一维的填充顺序为 (left, right)
+                temp_tensor = F.pad(temp_tensor, (pad_left, pad_right), mode='constant', value=0)
+
             divided_tensor.append(temp_tensor)
-            # 更换起始位置。
             start = end
+        # ======================================= Fix:张量（Tensor）的分段 + 边界扩展填充 =======================================
     # 返回最终的结果
     return divided_tensor, divide_record
 

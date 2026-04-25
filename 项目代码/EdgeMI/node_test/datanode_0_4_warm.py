@@ -4,8 +4,7 @@ sys.path.append("../..")
 sys.path.append("..")
 
 from node_test.network_op import Network_init_datanode, Network_init_namenode
-from node_test.num_set_up import Num_set_up
-from VGG.mydefine_VGG13 import VGG_model
+from node_test.num_set_up import Num_set_up, VGG_model
 from VGG.tensor_op import divied_middle_output
 import torch.nn as nn
 import torch, time

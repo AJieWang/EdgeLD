@@ -13,7 +13,7 @@ class Network_And_Computing():
             # 倒数
             self.computing_power.append(1.0/i)
         # 网络单位为 bps
-        self.network_state = [100e6, 10e6, 300e6, 1000e6, 50e6, 500e6, 100e6]
+        self.network_state = [1000e6, 1000e6, 1000e6, 1000e6, 1000e6, 1000e6, 1000e6]
         # 各节点物理内存大小 (bytes)，默认4个节点，每个1GB
         self.memory_state = [1e9, 1e9, 1e9, 1e9, 1e9, 1e9, 1e9]
     def get_computing_a(self, datanode_num = 1):

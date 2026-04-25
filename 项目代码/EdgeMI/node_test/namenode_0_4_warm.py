@@ -4,12 +4,11 @@ sys.path.append("../..")
 sys.path.append("..")
 
 from node_test.network_op import Network_init_datanode, Network_init_namenode
-from node_test.num_set_up import Num_set_up
+from node_test.num_set_up import Num_set_up, VGG_model, sample_tensor
 import torch
 import threading
 import time
 import torch.nn as nn
-from VGG.mydefine_VGG13 import VGG_model
 from VGG.tensor_op import tensor_divide, tensor_divide_and_fill, tensor_divide_by_computing_and_fill, \
     tensor_divide_by_computing_network_and_fill, tensor_divide_by_computing_and_network
 from VGG.tensor_op import merge_total_tensor, merge_part_tensor
@@ -39,7 +38,6 @@ conv_length = inference_model.get_conv_length()
 total_length = inference_model.get_total_length()
 c_out_list = inference_model.get_c_out()
 maxpool_layer = inference_model.get_maxpool_layer()
-width = 224
 
 # ====================== 时间统计相关全局变量 ======================
 transfer_time = []
@@ -97,7 +95,7 @@ def run_distributed_inference_env4(namenode, round_idx):
     thread_time = [[] for _ in range(datanode_num)]
 
     # 初始化输入和线程/接收列表
-    input_tensor = torch.rand(1, 3, width, width)
+    input_tensor = sample_tensor
     middle_output = input_tensor
     final_output = torch.rand(1, 100)
     thread = [0] * datanode_num

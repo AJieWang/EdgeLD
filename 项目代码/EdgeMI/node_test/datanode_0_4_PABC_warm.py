@@ -76,7 +76,7 @@ def datanode_persistent_pooled():
                     middle_output = inference_model(recv_tensor, start, block_end)
                     print("计算完成 middle_output:", middle_output.size())
                     if datanode_num != 1:
-                        print("第六层池化前分割")
+                        print("1-6 池化层6前分割")
                         divide_layer = 3
                         if datanode_name == 0:
                             # 最左侧
@@ -96,11 +96,33 @@ def datanode_persistent_pooled():
                     datanode.datanode_send_data(middle_output, transfer_time, start, block_end)
                     print(f"发送第 {block_end + 1} 层的结果 (包含池化层3和6)")
                 else:
-                    # 原有pooled模式：只计算卷积层
+                    # PABC模式：卷积+池化 池化前分割
                     if start in COMPUTE_CONV_BLOCKS_PABC:
-                        block_end = COMPUTE_CONV_BLOCKS_PABC[start]
-                        print(f"处理卷积块: 层 {start} - {block_end}")
+                        block_end = COMPUTE_CONV_BLOCKS_PABC[start] - 1
+                        print(f"PABC模式第一步-完整块: 层 {start} - {block_end} (不包含池化层)")
                         middle_output = inference_model(recv_tensor, start, block_end)
+                        print("计算完成 middle_output:", middle_output.size())
+                        if datanode_num != 1:
+                            print("池化层前分割")
+
+                            if inference_model.vgg_mode == "VGG13": divide_layer = 2
+                            else: divide_layer = 3
+
+                            if datanode_name == 0:
+                                # 最左侧
+                                middle_output = middle_output[:, :, :, 0:-divide_layer]
+                            elif datanode_name == datanode_num - 1:
+                                # 最右侧
+                                middle_output = middle_output[:, :, :, divide_layer:]
+                            else:
+                                # 中间非边界
+                                middle_output = middle_output[:, :, :, divide_layer: -divide_layer]
+                            print("分割后张量大小:", middle_output.size())
+                        else:
+                            print("单个节点无需切割")
+                            
+                        print(f"PABC模式第二步池化: 层 {block_end + 1} - {block_end + 1} (池化层)")
+                        middle_output = inference_model(middle_output, block_end + 1, block_end + 1)
                         print("计算完成 middle_output:", middle_output.size())
                         datanode.datanode_send_data(middle_output, transfer_time, start, block_end)
                         print(f"发送第 {block_end} 层的结果")

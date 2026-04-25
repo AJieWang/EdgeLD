@@ -1,2 +1,2 @@
-cd /d D:\Graduate\EdgeLD\ÏîÄ¿´úÂë\EdgeMI\node_test
+cd /d D:\Graduate\EdgeLD\é¡¹ç›®ä»£ç \EdgeMI\node_test
 conda activate EdgeLD
